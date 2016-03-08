@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-  <EntityContainerMapping StorageEntityContainer="naKremerModelStoreContainer" CdmEntityContainer="dataModel">
+  <EntityContainerMapping StorageEntityContainer="naKremerModelStoreContainer" CdmEntityContainer="DataModel">
     <EntitySetMapping Name="BILLINGs">
       <EntityTypeMapping TypeName="naKremerModel.BILLING">
         <MappingFragment StoreEntitySet="BILLING">
@@ -82,6 +82,7 @@
           <ScalarProperty Name="LastName" ColumnName="LastName" />
           <ScalarProperty Name="Genre" ColumnName="Genre" />
           <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

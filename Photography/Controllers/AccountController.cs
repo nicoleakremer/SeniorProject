@@ -9,13 +9,16 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using Photography.Models;
+using System.Data.SqlClient;
+using System.Data;
+using System.Web.Security;
 
 namespace Photography.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
-         private dataModel db = new dataModel();
+         private DataModel db = new DataModel();
         public AccountController()
             : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext())))
         {
@@ -33,35 +36,48 @@ namespace Photography.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-            ViewBag.ReturnUrl = returnUrl;
+          
             return View();
         }
 
         //
         // POST: /Account/Login
+       /*
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        public async Task<ActionResult> Login(Photography.CUSTOMER c)
         {
             if (ModelState.IsValid)
             {
-                var user = await UserManager.FindAsync(model.Email, model.Password);
-                if (user != null)
-                {
-                    await SignInAsync(user, model.RememberMe);
-                    return RedirectToLocal(returnUrl);
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Invalid username or password.");
-                }
+               // Compute the hash
+            byte[] data = System.Text.Encoding.ASCII.GetBytes(c.Hash + "#@!");
+            data = new System.Security.Cryptography.SHA256Managed().ComputeHash(data);
+            String hash = System.Text.Encoding.ASCII.GetString(data);
+            // Open a Sql connection
+            SqlConnection sqlConnection1 = new SqlConnection("data source=cs.cofo.edu;initial catalog=naKremer;persist security info=True;user id=nkremer;password=4lp0irjd;");
+            SqlCommand cmd = new SqlCommand("uspVerifyCustomer", sqlConnection1);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@CurrentUser", SqlDbType.VarChar).Value = c.Email;
+            cmd.Parameters.Add("@CurrentHash", SqlDbType.VarChar).Value = hash;
+            sqlConnection1.Open();
+            int count = 0;
+            count = (Int32)cmd.ExecuteScalar();
+            // If count is 0 then the username or password is wrong
+            if (count == 0)
+            {
+                ViewBag.Message = "<div class=\"alert alert-warning alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>" + "Wrong Username or Password" + "</div>";
+                return View();
             }
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
+            else
+            {
+               
+             FormsAuthentication.SetAuthCookie(c.Email, false);
+                return RedirectToAction("Index", "Home");
+            }
+            
         }
-
+*/
         //
         // GET: /Account/Register
         [AllowAnonymous]

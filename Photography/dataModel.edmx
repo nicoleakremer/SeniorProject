@@ -88,6 +88,7 @@ warning 6013: The table/view 'naKremer.dbo.PHOTO_CART' does not have a primary k
           <Property Name="LastName" Type="varchar" MaxLength="50" />
           <Property Name="Genre" Type="varchar" MaxLength="50" />
           <Property Name="Description" Type="varchar" MaxLength="200" />
+          <Property Name="Price" Type="money" />
         </EntityType>
         <EntityType Name="SHIPPING">
           <Key>
@@ -467,6 +468,7 @@ error 6004: The table 'naKremer.dbo.PHOTO_CART' is referenced by a relationship,
           <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Genre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Price" Type="Decimal" Precision="19" Scale="4" />
           <NavigationProperty Name="INVENTORY" Relationship="Self.FK_PHOTOS_INVENTORY" FromRole="PHOTOS" ToRole="INVENTORY" />
           <NavigationProperty Name="VENDOR" Relationship="Self.FK_PHOTOS_VENDOR" FromRole="PHOTOS" ToRole="VENDOR" />
         </EntityType>
@@ -654,7 +656,7 @@ error 6004: The table 'naKremer.dbo.PHOTO_CART' is referenced by a relationship,
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="dataModel" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="DataModel" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="BILLINGs" EntityType="Self.BILLING" />
           <EntitySet Name="CARTs" EntityType="Self.CART" />
           <EntitySet Name="CREDIT_CARD" EntityType="Self.CREDIT_CARD" />
@@ -768,7 +770,7 @@ error 6004: The table 'naKremer.dbo.PHOTO_CART' is referenced by a relationship,
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="naKremerModelStoreContainer" CdmEntityContainer="dataModel">
+        <EntityContainerMapping StorageEntityContainer="naKremerModelStoreContainer" CdmEntityContainer="DataModel">
           <EntitySetMapping Name="BILLINGs">
             <EntityTypeMapping TypeName="naKremerModel.BILLING">
               <MappingFragment StoreEntitySet="BILLING">
@@ -850,6 +852,7 @@ error 6004: The table 'naKremer.dbo.PHOTO_CART' is referenced by a relationship,
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="Genre" ColumnName="Genre" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

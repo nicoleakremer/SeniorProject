@@ -15,10 +15,10 @@ namespace Photography
     using System.Data.Entity.Core.Objects;
     using System.Linq;
     
-    public partial class dataModel : DbContext
+    public partial class DataModel : DbContext
     {
-        public dataModel()
-            : base("name=dataModel")
+        public DataModel()
+            : base("name=DataModel")
         {
         }
     

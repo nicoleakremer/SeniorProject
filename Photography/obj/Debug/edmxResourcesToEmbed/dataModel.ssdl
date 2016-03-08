@@ -83,6 +83,7 @@ warning 6013: The table/view 'naKremer.dbo.PHOTO_CART' does not have a primary k
     <Property Name="LastName" Type="varchar" MaxLength="50" />
     <Property Name="Genre" Type="varchar" MaxLength="50" />
     <Property Name="Description" Type="varchar" MaxLength="200" />
+    <Property Name="Price" Type="money" />
   </EntityType>
   <EntityType Name="SHIPPING">
     <Key>

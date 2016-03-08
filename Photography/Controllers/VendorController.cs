@@ -13,7 +13,7 @@ namespace Photography.Controllers
 {
     public class VendorController : Controller
     {
-        private dataModel db = new dataModel();
+        private DataModel db = new DataModel();
 
         // GET: /Vendor/
         public async Task<ActionResult> Index()

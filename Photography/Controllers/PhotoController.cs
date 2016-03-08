@@ -8,121 +8,119 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Photography;
-using System.Security.Cryptography;
-using System.Web.Helpers;
-
 
 namespace Photography.Controllers
 {
-    public class RegisterController : Controller
+    public class PhotoController : Controller
     {
         private DataModel db = new DataModel();
 
-        // GET: /Register/
-        public async Task<ActionResult> Index()
+        // GET: /Photo/
+        public ActionResult Index()
         {
-            return View(await db.CUSTOMERs.ToListAsync());
+            var photo = db.PHOTOS.Include(p => p.INVENTORY).Include(p => p.VENDOR);
+            return View(photo.ToList());
         }
 
-        // GET: /Register/Details/5
+        // GET: /Photo/Details/5
         public async Task<ActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CUSTOMER customer = await db.CUSTOMERs.FindAsync(id);
-            if (customer == null)
+            Photo photo = await db.PHOTOS.FindAsync(id);
+            if (photo == null)
             {
                 return HttpNotFound();
             }
-            return View(customer);
+            return View(photo);
         }
 
-        // GET: /Register/Create
+        // GET: /Photo/Create
         public ActionResult Create()
         {
+            ViewBag.InventoryId = new SelectList(db.INVENTORies, "InventoryId", "InventoryId");
+            ViewBag.VendorId = new SelectList(db.VENDORs, "VendorId", "Email");
             return View();
         }
 
-        // POST: /Register/Create
+        // POST: /Photo/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include="CustomerId,Email,Password,FirstName,LastName,Phone")] CUSTOMER customer)
+        public async Task<ActionResult> Create([Bind(Include="PhotoId,InventoryId,VendorId,Title,FirstName,LastName,Genre,Description,Price")] Photo photo)
         {
-          
             if (ModelState.IsValid)
             {
-             /*
-                string salt = Crypto.GenerateSalt();
-                string passAndSalt;
-                string UserHash;
-                passAndSalt = customer.Password + salt;
-                UserHash = Crypto.Hash(passAndSalt);
-                */
-                db.CUSTOMERs.Add(customer);
+                db.PHOTOS.Add(photo);
                 await db.SaveChangesAsync();
-                return RedirectToAction("Index","Home");
+                return RedirectToAction("Index");
             }
 
-            return View(customer);
+            ViewBag.InventoryId = new SelectList(db.INVENTORies, "InventoryId", "InventoryId", photo.InventoryId);
+            ViewBag.VendorId = new SelectList(db.VENDORs, "VendorId", "Email", photo.VendorId);
+            return View(photo);
         }
 
-        // GET: /Register/Edit/5
+        // GET: /Photo/Edit/5
         public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CUSTOMER customer = await db.CUSTOMERs.FindAsync(id);
-            if (customer == null)
+            Photo photo = await db.PHOTOS.FindAsync(id);
+            if (photo == null)
             {
                 return HttpNotFound();
             }
-            return View(customer);
+            ViewBag.InventoryId = new SelectList(db.INVENTORies, "InventoryId", "InventoryId", photo.InventoryId);
+            ViewBag.VendorId = new SelectList(db.VENDORs, "VendorId", "Email", photo.VendorId);
+            return View(photo);
         }
 
-        // POST: /Register/Edit/5
+        // POST: /Photo/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include="CustomerId,Email,Password,FirstName,LastName,Phone")] CUSTOMER customer)
+        public async Task<ActionResult> Edit([Bind(Include="PhotoId,InventoryId,VendorId,Title,FirstName,LastName,Genre,Description,Price")] Photo photo)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(customer).State = EntityState.Modified;
+                db.Entry(photo).State = EntityState.Modified;
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            return View(customer);
+            ViewBag.InventoryId = new SelectList(db.INVENTORies, "InventoryId", "InventoryId", photo.InventoryId);
+            ViewBag.VendorId = new SelectList(db.VENDORs, "VendorId", "Email", photo.VendorId);
+            return View(photo);
         }
 
-        // GET: /Register/Delete/5
+        // GET: /Photo/Delete/5
         public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CUSTOMER customer = await db.CUSTOMERs.FindAsync(id);
-            if (customer == null)
+            Photo photo = await db.PHOTOS.FindAsync(id);
+            if (photo == null)
             {
                 return HttpNotFound();
             }
-            return View(customer);
+            return View(photo);
         }
 
-        // POST: /Register/Delete/5
+        // POST: /Photo/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            CUSTOMER customer = await db.CUSTOMERs.FindAsync(id);
-            db.CUSTOMERs.Remove(customer);
+            Photo photo = await db.PHOTOS.FindAsync(id);
+            db.PHOTOS.Remove(photo);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }

@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="43dfab324d044a6f88412c1a0b7e9209" Name="Diagram1">
+      <Diagram DiagramId="7e43eb02e7054c82861fdef95152d9ab" Name="Diagram1">
         <EntityTypeShape EntityType="naKremerModel.BILLING" Width="1.5" PointX="3" PointY="8.25" IsExpanded="true" />
         <EntityTypeShape EntityType="naKremerModel.CART" Width="1.5" PointX="6" PointY="8.625" IsExpanded="true" />
         <EntityTypeShape EntityType="naKremerModel.CREDIT_CARD" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
@@ -13,7 +13,7 @@
         <EntityTypeShape EntityType="naKremerModel.INVOICE" Width="1.5" PointX="8.25" PointY="8.375" IsExpanded="true" />
         <EntityTypeShape EntityType="naKremerModel.Photo" Width="1.5" PointX="3" PointY="4.25" IsExpanded="true" />
         <EntityTypeShape EntityType="naKremerModel.SHIPPING" Width="1.5" PointX="3" PointY="12.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="naKremerModel.sysdiagram" Width="1.5" PointX="5.75" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="naKremerModel.sysdiagram" Width="1.5" PointX="5.75" PointY="2" IsExpanded="true" />
         <EntityTypeShape EntityType="naKremerModel.VENDOR" Width="1.5" PointX="0.75" PointY="8.25" IsExpanded="true" />
         <AssociationConnector Association="naKremerModel.FK_BILLING_CREDIT_CARD" ManuallyRouted="false" />
         <AssociationConnector Association="naKremerModel.FK_BILLING_CUSTOMER" ManuallyRouted="false" />
