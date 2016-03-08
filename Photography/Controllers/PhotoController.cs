@@ -16,10 +16,10 @@ namespace Photography.Controllers
         private DataModel db = new DataModel();
 
         // GET: /Photo/
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            var photo = db.PHOTOS.Include(p => p.INVENTORY).Include(p => p.VENDOR);
-            return View(photo.ToList());
+            var photos = db.PHOTOS;
+            return View(await photos.ToListAsync());
         }
 
         // GET: /Photo/Details/5

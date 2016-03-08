@@ -208,6 +208,7 @@
     <Compile Include="Photo.cs">
       <DependentUpon>dataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="photo_Nicole.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SHIPPING.cs">
       <DependentUpon>dataModel.tt</DependentUpon>
