@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="43dfab324d044a6f88412c1a0b7e9209" Name="Diagram1">
+        <EntityTypeShape EntityType="naKremerModel.BILLING" Width="1.5" PointX="3" PointY="8.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="naKremerModel.CART" Width="1.5" PointX="6" PointY="8.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="naKremerModel.CREDIT_CARD" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="naKremerModel.CUSTOMER" Width="1.5" PointX="0.75" PointY="12.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="naKremerModel.INVENTORY" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="naKremerModel.INVOICE" Width="1.5" PointX="8.25" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="naKremerModel.Photo" Width="1.5" PointX="3" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="naKremerModel.SHIPPING" Width="1.5" PointX="3" PointY="12.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="naKremerModel.sysdiagram" Width="1.5" PointX="5.75" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="naKremerModel.VENDOR" Width="1.5" PointX="0.75" PointY="8.25" IsExpanded="true" />
+        <AssociationConnector Association="naKremerModel.FK_BILLING_CREDIT_CARD" ManuallyRouted="false" />
+        <AssociationConnector Association="naKremerModel.FK_BILLING_CUSTOMER" ManuallyRouted="false" />
+        <AssociationConnector Association="naKremerModel.FK_BILLING_VENDOR" ManuallyRouted="false" />
+        <AssociationConnector Association="naKremerModel.FK_CART_CUSTOMER" ManuallyRouted="false" />
+        <AssociationConnector Association="naKremerModel.FK_CART_VENDOR" ManuallyRouted="false" />
+        <AssociationConnector Association="naKremerModel.FK_INVOICE_CART" ManuallyRouted="false" />
+        <AssociationConnector Association="naKremerModel.FK_INVOICE_CUSTOMER" ManuallyRouted="false" />
+        <AssociationConnector Association="naKremerModel.FK_SHIPPING_CUSTOMER" ManuallyRouted="false" />
+        <AssociationConnector Association="naKremerModel.FK_PHOTOS_INVENTORY" ManuallyRouted="false" />
+        <AssociationConnector Association="naKremerModel.FK_INVOICE_VENDOR" ManuallyRouted="false" />
+        <AssociationConnector Association="naKremerModel.FK_PHOTOS_VENDOR" ManuallyRouted="false" />
+        <AssociationConnector Association="naKremerModel.FK_SHIPPING_VENDOR" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

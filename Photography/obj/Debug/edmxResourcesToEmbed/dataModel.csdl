@@ -1,0 +1,390 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="naKremerModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="BILLING">
+    <Key>
+      <PropertyRef Name="BillingId" />
+    </Key>
+    <Property Name="BillingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CustomerId" Type="Int32" Nullable="false" />
+    <Property Name="VendorId" Type="Int32" />
+    <Property Name="CardId" Type="Int32" Nullable="false" />
+    <Property Name="State" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Street" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="City" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Zip" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="CREDIT_CARD" Relationship="Self.FK_BILLING_CREDIT_CARD" FromRole="BILLING" ToRole="CREDIT_CARD" />
+    <NavigationProperty Name="CUSTOMER" Relationship="Self.FK_BILLING_CUSTOMER" FromRole="BILLING" ToRole="CUSTOMER" />
+    <NavigationProperty Name="VENDOR" Relationship="Self.FK_BILLING_VENDOR" FromRole="BILLING" ToRole="VENDOR" />
+  </EntityType>
+  <EntityType Name="CART">
+    <Key>
+      <PropertyRef Name="CartId" />
+    </Key>
+    <Property Name="CartId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CustomerId" Type="Int32" Nullable="false" />
+    <Property Name="VendorId" Type="Int32" />
+    <Property Name="IsActive" Type="Binary" MaxLength="1" FixedLength="true" />
+    <NavigationProperty Name="CUSTOMER" Relationship="Self.FK_CART_CUSTOMER" FromRole="CART" ToRole="CUSTOMER" />
+    <NavigationProperty Name="VENDOR" Relationship="Self.FK_CART_VENDOR" FromRole="CART" ToRole="VENDOR" />
+    <NavigationProperty Name="INVOICEs" Relationship="Self.FK_INVOICE_CART" FromRole="CART" ToRole="INVOICE" />
+  </EntityType>
+  <EntityType Name="CREDIT_CARD">
+    <Key>
+      <PropertyRef Name="CardId" />
+    </Key>
+    <Property Name="CardId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CardType" Type="String" MaxLength="16" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CardNumber" Type="Int64" Nullable="false" />
+    <Property Name="NameOnCard" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ExpirationDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="SecurityCode" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="BILLINGs" Relationship="Self.FK_BILLING_CREDIT_CARD" FromRole="CREDIT_CARD" ToRole="BILLING" />
+  </EntityType>
+  <EntityType Name="CUSTOMER">
+    <Key>
+      <PropertyRef Name="CustomerId" />
+    </Key>
+    <Property Name="CustomerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Password" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="FirstName" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+    <Property Name="LastName" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+    <Property Name="Phone" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="BILLINGs" Relationship="Self.FK_BILLING_CUSTOMER" FromRole="CUSTOMER" ToRole="BILLING" />
+    <NavigationProperty Name="CARTs" Relationship="Self.FK_CART_CUSTOMER" FromRole="CUSTOMER" ToRole="CART" />
+    <NavigationProperty Name="INVOICEs" Relationship="Self.FK_INVOICE_CUSTOMER" FromRole="CUSTOMER" ToRole="INVOICE" />
+    <NavigationProperty Name="SHIPPINGs" Relationship="Self.FK_SHIPPING_CUSTOMER" FromRole="CUSTOMER" ToRole="SHIPPING" />
+  </EntityType>
+  <EntityType Name="INVENTORY">
+    <Key>
+      <PropertyRef Name="InventoryId" />
+    </Key>
+    <Property Name="InventoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RetailPrice" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="WholeSalePrice" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="NumInStock" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="PHOTOS" Relationship="Self.FK_PHOTOS_INVENTORY" FromRole="INVENTORY" ToRole="PHOTOS" />
+  </EntityType>
+  <EntityType Name="INVOICE">
+    <Key>
+      <PropertyRef Name="InvoiceId" />
+    </Key>
+    <Property Name="InvoiceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CustomerId" Type="Int32" Nullable="false" />
+    <Property Name="VendorId" Type="Int32" />
+    <Property Name="CartId" Type="Int32" Nullable="false" />
+    <Property Name="TotalCost" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="DateOrder" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="CART" Relationship="Self.FK_INVOICE_CART" FromRole="INVOICE" ToRole="CART" />
+    <NavigationProperty Name="CUSTOMER" Relationship="Self.FK_INVOICE_CUSTOMER" FromRole="INVOICE" ToRole="CUSTOMER" />
+    <NavigationProperty Name="VENDOR" Relationship="Self.FK_INVOICE_VENDOR" FromRole="INVOICE" ToRole="VENDOR" />
+  </EntityType>
+  <EntityType Name="Photo">
+    <Key>
+      <PropertyRef Name="PhotoId" />
+    </Key>
+    <Property Name="PhotoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="InventoryId" Type="Int32" Nullable="false" />
+    <Property Name="VendorId" Type="Int32" />
+    <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Genre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="INVENTORY" Relationship="Self.FK_PHOTOS_INVENTORY" FromRole="PHOTOS" ToRole="INVENTORY" />
+    <NavigationProperty Name="VENDOR" Relationship="Self.FK_PHOTOS_VENDOR" FromRole="PHOTOS" ToRole="VENDOR" />
+  </EntityType>
+  <EntityType Name="SHIPPING">
+    <Key>
+      <PropertyRef Name="ShippingId" />
+    </Key>
+    <Property Name="ShippingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CustomerId" Type="Int32" Nullable="false" />
+    <Property Name="VendorId" Type="Int32" />
+    <Property Name="State" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Street" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="City" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Zip" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="CUSTOMER" Relationship="Self.FK_SHIPPING_CUSTOMER" FromRole="SHIPPING" ToRole="CUSTOMER" />
+    <NavigationProperty Name="VENDOR" Relationship="Self.FK_SHIPPING_VENDOR" FromRole="SHIPPING" ToRole="VENDOR" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="VENDOR">
+    <Key>
+      <PropertyRef Name="VendorId" />
+    </Key>
+    <Property Name="VendorId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="BILLINGs" Relationship="Self.FK_BILLING_VENDOR" FromRole="VENDOR" ToRole="BILLING" />
+    <NavigationProperty Name="CARTs" Relationship="Self.FK_CART_VENDOR" FromRole="VENDOR" ToRole="CART" />
+    <NavigationProperty Name="INVOICEs" Relationship="Self.FK_INVOICE_VENDOR" FromRole="VENDOR" ToRole="INVOICE" />
+    <NavigationProperty Name="PHOTOS" Relationship="Self.FK_PHOTOS_VENDOR" FromRole="VENDOR" ToRole="PHOTOS" />
+    <NavigationProperty Name="SHIPPINGs" Relationship="Self.FK_SHIPPING_VENDOR" FromRole="VENDOR" ToRole="SHIPPING" />
+  </EntityType>
+  <Association Name="FK_BILLING_CREDIT_CARD">
+    <End Role="CREDIT_CARD" Type="Self.CREDIT_CARD" Multiplicity="1" />
+    <End Role="BILLING" Type="Self.BILLING" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CREDIT_CARD">
+        <PropertyRef Name="CardId" />
+      </Principal>
+      <Dependent Role="BILLING">
+        <PropertyRef Name="CardId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_BILLING_CUSTOMER">
+    <End Role="CUSTOMER" Type="Self.CUSTOMER" Multiplicity="1" />
+    <End Role="BILLING" Type="Self.BILLING" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CUSTOMER">
+        <PropertyRef Name="CustomerId" />
+      </Principal>
+      <Dependent Role="BILLING">
+        <PropertyRef Name="CustomerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_BILLING_VENDOR">
+    <End Role="VENDOR" Type="Self.VENDOR" Multiplicity="0..1" />
+    <End Role="BILLING" Type="Self.BILLING" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="VENDOR">
+        <PropertyRef Name="VendorId" />
+      </Principal>
+      <Dependent Role="BILLING">
+        <PropertyRef Name="VendorId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CART_CUSTOMER">
+    <End Role="CUSTOMER" Type="Self.CUSTOMER" Multiplicity="1" />
+    <End Role="CART" Type="Self.CART" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CUSTOMER">
+        <PropertyRef Name="CustomerId" />
+      </Principal>
+      <Dependent Role="CART">
+        <PropertyRef Name="CustomerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CART_VENDOR">
+    <End Role="VENDOR" Type="Self.VENDOR" Multiplicity="0..1" />
+    <End Role="CART" Type="Self.CART" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="VENDOR">
+        <PropertyRef Name="VendorId" />
+      </Principal>
+      <Dependent Role="CART">
+        <PropertyRef Name="VendorId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_INVOICE_CART">
+    <End Role="CART" Type="Self.CART" Multiplicity="1" />
+    <End Role="INVOICE" Type="Self.INVOICE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CART">
+        <PropertyRef Name="CartId" />
+      </Principal>
+      <Dependent Role="INVOICE">
+        <PropertyRef Name="CartId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_INVOICE_CUSTOMER">
+    <End Role="CUSTOMER" Type="Self.CUSTOMER" Multiplicity="1" />
+    <End Role="INVOICE" Type="Self.INVOICE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CUSTOMER">
+        <PropertyRef Name="CustomerId" />
+      </Principal>
+      <Dependent Role="INVOICE">
+        <PropertyRef Name="CustomerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SHIPPING_CUSTOMER">
+    <End Role="CUSTOMER" Type="Self.CUSTOMER" Multiplicity="1" />
+    <End Role="SHIPPING" Type="Self.SHIPPING" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CUSTOMER">
+        <PropertyRef Name="CustomerId" />
+      </Principal>
+      <Dependent Role="SHIPPING">
+        <PropertyRef Name="CustomerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PHOTOS_INVENTORY">
+    <End Role="INVENTORY" Type="Self.INVENTORY" Multiplicity="1" />
+    <End Role="PHOTOS" Type="Self.Photo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="INVENTORY">
+        <PropertyRef Name="InventoryId" />
+      </Principal>
+      <Dependent Role="PHOTOS">
+        <PropertyRef Name="InventoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_INVOICE_VENDOR">
+    <End Role="VENDOR" Type="Self.VENDOR" Multiplicity="0..1" />
+    <End Role="INVOICE" Type="Self.INVOICE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="VENDOR">
+        <PropertyRef Name="VendorId" />
+      </Principal>
+      <Dependent Role="INVOICE">
+        <PropertyRef Name="VendorId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PHOTOS_VENDOR">
+    <End Role="VENDOR" Type="Self.VENDOR" Multiplicity="0..1" />
+    <End Role="PHOTOS" Type="Self.Photo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="VENDOR">
+        <PropertyRef Name="VendorId" />
+      </Principal>
+      <Dependent Role="PHOTOS">
+        <PropertyRef Name="VendorId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SHIPPING_VENDOR">
+    <End Role="VENDOR" Type="Self.VENDOR" Multiplicity="0..1" />
+    <End Role="SHIPPING" Type="Self.SHIPPING" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="VENDOR">
+        <PropertyRef Name="VendorId" />
+      </Principal>
+      <Dependent Role="SHIPPING">
+        <PropertyRef Name="VendorId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="dataModel" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="BILLINGs" EntityType="Self.BILLING" />
+    <EntitySet Name="CARTs" EntityType="Self.CART" />
+    <EntitySet Name="CREDIT_CARD" EntityType="Self.CREDIT_CARD" />
+    <EntitySet Name="CUSTOMERs" EntityType="Self.CUSTOMER" />
+    <EntitySet Name="INVENTORies" EntityType="Self.INVENTORY" />
+    <EntitySet Name="INVOICEs" EntityType="Self.INVOICE" />
+    <EntitySet Name="PHOTOS" EntityType="Self.Photo" />
+    <EntitySet Name="SHIPPINGs" EntityType="Self.SHIPPING" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <EntitySet Name="VENDORs" EntityType="Self.VENDOR" />
+    <AssociationSet Name="FK_BILLING_CREDIT_CARD" Association="Self.FK_BILLING_CREDIT_CARD">
+      <End Role="CREDIT_CARD" EntitySet="CREDIT_CARD" />
+      <End Role="BILLING" EntitySet="BILLINGs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_BILLING_CUSTOMER" Association="Self.FK_BILLING_CUSTOMER">
+      <End Role="CUSTOMER" EntitySet="CUSTOMERs" />
+      <End Role="BILLING" EntitySet="BILLINGs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_BILLING_VENDOR" Association="Self.FK_BILLING_VENDOR">
+      <End Role="VENDOR" EntitySet="VENDORs" />
+      <End Role="BILLING" EntitySet="BILLINGs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CART_CUSTOMER" Association="Self.FK_CART_CUSTOMER">
+      <End Role="CUSTOMER" EntitySet="CUSTOMERs" />
+      <End Role="CART" EntitySet="CARTs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CART_VENDOR" Association="Self.FK_CART_VENDOR">
+      <End Role="VENDOR" EntitySet="VENDORs" />
+      <End Role="CART" EntitySet="CARTs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_INVOICE_CART" Association="Self.FK_INVOICE_CART">
+      <End Role="CART" EntitySet="CARTs" />
+      <End Role="INVOICE" EntitySet="INVOICEs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_INVOICE_CUSTOMER" Association="Self.FK_INVOICE_CUSTOMER">
+      <End Role="CUSTOMER" EntitySet="CUSTOMERs" />
+      <End Role="INVOICE" EntitySet="INVOICEs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SHIPPING_CUSTOMER" Association="Self.FK_SHIPPING_CUSTOMER">
+      <End Role="CUSTOMER" EntitySet="CUSTOMERs" />
+      <End Role="SHIPPING" EntitySet="SHIPPINGs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PHOTOS_INVENTORY" Association="Self.FK_PHOTOS_INVENTORY">
+      <End Role="INVENTORY" EntitySet="INVENTORies" />
+      <End Role="PHOTOS" EntitySet="PHOTOS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_INVOICE_VENDOR" Association="Self.FK_INVOICE_VENDOR">
+      <End Role="VENDOR" EntitySet="VENDORs" />
+      <End Role="INVOICE" EntitySet="INVOICEs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PHOTOS_VENDOR" Association="Self.FK_PHOTOS_VENDOR">
+      <End Role="VENDOR" EntitySet="VENDORs" />
+      <End Role="PHOTOS" EntitySet="PHOTOS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SHIPPING_VENDOR" Association="Self.FK_SHIPPING_VENDOR">
+      <End Role="VENDOR" EntitySet="VENDORs" />
+      <End Role="SHIPPING" EntitySet="SHIPPINGs" />
+    </AssociationSet>
+    <FunctionImport Name="sp_alterdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_creatediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_dropdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(naKremerModel.sp_helpdiagramdefinition_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(naKremerModel.sp_helpdiagrams_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_renamediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="new_diagramname" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_upgraddiagrams" />
+    <FunctionImport Name="STUDENT_Add">
+      <Parameter Name="LastName" Mode="In" Type="String" />
+      <Parameter Name="FirstName" Mode="In" Type="String" />
+      <Parameter Name="MiddleName" Mode="In" Type="String" />
+      <Parameter Name="EnrollmentDate" Mode="In" Type="DateTime" />
+      <Parameter Name="CourseID" Mode="In" Type="Int32" />
+      <Parameter Name="Grade" Mode="In" Type="Decimal" />
+    </FunctionImport>
+  </EntityContainer>
+  <ComplexType Name="sp_helpdiagramdefinition_Result">
+    <Property Type="Int32" Name="version" Nullable="true" />
+    <Property Type="Binary" Name="definition" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_helpdiagrams_Result">
+    <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+    <Property Type="Int32" Name="OwnerID" Nullable="false" />
+  </ComplexType>
+</Schema>

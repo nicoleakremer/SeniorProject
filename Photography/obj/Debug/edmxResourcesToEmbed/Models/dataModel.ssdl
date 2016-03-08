@@ -1,0 +1,369 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="naKremerModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="BILLING">
+    <Key>
+      <PropertyRef Name="BillingId" />
+    </Key>
+    <Property Name="BillingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CustomerId" Type="int" Nullable="false" />
+    <Property Name="VendorId" Type="int" />
+    <Property Name="CardId" Type="int" Nullable="false" />
+    <Property Name="State" Type="varchar" MaxLength="5" Nullable="false" />
+    <Property Name="Street" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="City" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="Zip" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CART">
+    <Key>
+      <PropertyRef Name="CartId" />
+    </Key>
+    <Property Name="CartId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CustomerId" Type="int" Nullable="false" />
+    <Property Name="VendorId" Type="int" />
+    <Property Name="IsActive" Type="binary" MaxLength="1" />
+  </EntityType>
+  <EntityType Name="CREDIT_CARD">
+    <Key>
+      <PropertyRef Name="CardId" />
+    </Key>
+    <Property Name="CardId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CardType" Type="varchar" MaxLength="16" Nullable="false" />
+    <Property Name="CardNumber" Type="bigint" Nullable="false" />
+    <Property Name="NameOnCard" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="ExpirationDate" Type="date" Nullable="false" />
+    <Property Name="SecurityCode" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CUSTOMER">
+    <Key>
+      <PropertyRef Name="CustomerId" />
+    </Key>
+    <Property Name="CustomerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Email" Type="varchar" MaxLength="50" />
+    <Property Name="Password" Type="nchar" MaxLength="10" />
+    <Property Name="FirstName" Type="varchar" MaxLength="25" />
+    <Property Name="LastName" Type="varchar" MaxLength="25" />
+    <Property Name="Phone" Type="varchar" MaxLength="15" />
+  </EntityType>
+  <EntityType Name="INVENTORY">
+    <Key>
+      <PropertyRef Name="InventoryId" />
+    </Key>
+    <Property Name="InventoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="RetailPrice" Type="money" Nullable="false" />
+    <Property Name="WholeSalePrice" Type="money" Nullable="false" />
+    <Property Name="NumInStock" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="INVOICE">
+    <Key>
+      <PropertyRef Name="InvoiceId" />
+    </Key>
+    <Property Name="InvoiceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CustomerId" Type="int" Nullable="false" />
+    <Property Name="VendorId" Type="int" />
+    <Property Name="CartId" Type="int" Nullable="false" />
+    <Property Name="TotalCost" Type="money" />
+    <Property Name="DateOrder" Type="date" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6013: The table/view 'naKremer.dbo.PHOTO_CART' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="PHOTO_CART">
+          <Property Name="PhotoId" Type="int" />
+          <Property Name="CartId" Type="int" />
+          <Property Name="Quantity" Type="int" />
+        </EntityType>-->
+  <EntityType Name="PHOTOS">
+    <Key>
+      <PropertyRef Name="PhotoId" />
+    </Key>
+    <Property Name="PhotoId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="InventoryId" Type="int" Nullable="false" />
+    <Property Name="VendorId" Type="int" />
+    <Property Name="Title" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="FirstName" Type="varchar" MaxLength="50" />
+    <Property Name="LastName" Type="varchar" MaxLength="50" />
+    <Property Name="Genre" Type="varchar" MaxLength="50" />
+    <Property Name="Description" Type="varchar" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="SHIPPING">
+    <Key>
+      <PropertyRef Name="ShippingId" />
+    </Key>
+    <Property Name="ShippingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CustomerId" Type="int" Nullable="false" />
+    <Property Name="VendorId" Type="int" />
+    <Property Name="State" Type="varchar" MaxLength="5" Nullable="false" />
+    <Property Name="Street" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="City" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="Zip" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="VENDOR">
+    <Key>
+      <PropertyRef Name="VendorId" />
+    </Key>
+    <Property Name="VendorId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="FirstName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="LastName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Phone" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_BILLING_CREDIT_CARD">
+    <End Role="CREDIT_CARD" Type="Self.CREDIT_CARD" Multiplicity="1" />
+    <End Role="BILLING" Type="Self.BILLING" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CREDIT_CARD">
+        <PropertyRef Name="CardId" />
+      </Principal>
+      <Dependent Role="BILLING">
+        <PropertyRef Name="CardId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_BILLING_CUSTOMER">
+    <End Role="CUSTOMER" Type="Self.CUSTOMER" Multiplicity="1" />
+    <End Role="BILLING" Type="Self.BILLING" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CUSTOMER">
+        <PropertyRef Name="CustomerId" />
+      </Principal>
+      <Dependent Role="BILLING">
+        <PropertyRef Name="CustomerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_BILLING_VENDOR">
+    <End Role="VENDOR" Type="Self.VENDOR" Multiplicity="0..1" />
+    <End Role="BILLING" Type="Self.BILLING" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="VENDOR">
+        <PropertyRef Name="VendorId" />
+      </Principal>
+      <Dependent Role="BILLING">
+        <PropertyRef Name="VendorId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CART_CUSTOMER">
+    <End Role="CUSTOMER" Type="Self.CUSTOMER" Multiplicity="1" />
+    <End Role="CART" Type="Self.CART" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CUSTOMER">
+        <PropertyRef Name="CustomerId" />
+      </Principal>
+      <Dependent Role="CART">
+        <PropertyRef Name="CustomerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CART_VENDOR">
+    <End Role="VENDOR" Type="Self.VENDOR" Multiplicity="0..1" />
+    <End Role="CART" Type="Self.CART" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="VENDOR">
+        <PropertyRef Name="VendorId" />
+      </Principal>
+      <Dependent Role="CART">
+        <PropertyRef Name="VendorId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_INVOICE_CART">
+    <End Role="CART" Type="Self.CART" Multiplicity="1" />
+    <End Role="INVOICE" Type="Self.INVOICE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CART">
+        <PropertyRef Name="CartId" />
+      </Principal>
+      <Dependent Role="INVOICE">
+        <PropertyRef Name="CartId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_INVOICE_CUSTOMER">
+    <End Role="CUSTOMER" Type="Self.CUSTOMER" Multiplicity="1" />
+    <End Role="INVOICE" Type="Self.INVOICE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CUSTOMER">
+        <PropertyRef Name="CustomerId" />
+      </Principal>
+      <Dependent Role="INVOICE">
+        <PropertyRef Name="CustomerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_INVOICE_VENDOR">
+    <End Role="VENDOR" Type="Self.VENDOR" Multiplicity="0..1" />
+    <End Role="INVOICE" Type="Self.INVOICE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="VENDOR">
+        <PropertyRef Name="VendorId" />
+      </Principal>
+      <Dependent Role="INVOICE">
+        <PropertyRef Name="VendorId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <!--Errors Found During Generation:
+error 6004: The table 'naKremer.dbo.PHOTO_CART' is referenced by a relationship, but cannot be found.
+        <Association Name="FK_PHOTO_CART_CART" />-->
+  <!--Errors Found During Generation:
+error 6004: The table 'naKremer.dbo.PHOTO_CART' is referenced by a relationship, but cannot be found.
+        <Association Name="FK_PHOTO_CART_PHOTOS" />-->
+  <Association Name="FK_PHOTOS_INVENTORY">
+    <End Role="INVENTORY" Type="Self.INVENTORY" Multiplicity="1" />
+    <End Role="PHOTOS" Type="Self.PHOTOS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="INVENTORY">
+        <PropertyRef Name="InventoryId" />
+      </Principal>
+      <Dependent Role="PHOTOS">
+        <PropertyRef Name="InventoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PHOTOS_VENDOR">
+    <End Role="VENDOR" Type="Self.VENDOR" Multiplicity="0..1" />
+    <End Role="PHOTOS" Type="Self.PHOTOS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="VENDOR">
+        <PropertyRef Name="VendorId" />
+      </Principal>
+      <Dependent Role="PHOTOS">
+        <PropertyRef Name="VendorId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SHIPPING_CUSTOMER">
+    <End Role="CUSTOMER" Type="Self.CUSTOMER" Multiplicity="1" />
+    <End Role="SHIPPING" Type="Self.SHIPPING" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CUSTOMER">
+        <PropertyRef Name="CustomerId" />
+      </Principal>
+      <Dependent Role="SHIPPING">
+        <PropertyRef Name="CustomerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SHIPPING_VENDOR">
+    <End Role="VENDOR" Type="Self.VENDOR" Multiplicity="0..1" />
+    <End Role="SHIPPING" Type="Self.SHIPPING" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="VENDOR">
+        <PropertyRef Name="VendorId" />
+      </Principal>
+      <Dependent Role="SHIPPING">
+        <PropertyRef Name="VendorId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+  <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="STUDENT_Add" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="LastName" Type="nvarchar" Mode="In" />
+    <Parameter Name="FirstName" Type="nvarchar" Mode="In" />
+    <Parameter Name="MiddleName" Type="nvarchar" Mode="In" />
+    <Parameter Name="EnrollmentDate" Type="datetime" Mode="In" />
+    <Parameter Name="CourseID" Type="int" Mode="In" />
+    <Parameter Name="Grade" Type="decimal" Mode="In" />
+  </Function>
+  <EntityContainer Name="naKremerModelStoreContainer">
+    <EntitySet Name="BILLING" EntityType="Self.BILLING" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CART" EntityType="Self.CART" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CREDIT_CARD" EntityType="Self.CREDIT_CARD" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CUSTOMER" EntityType="Self.CUSTOMER" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="INVENTORY" EntityType="Self.INVENTORY" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="INVOICE" EntityType="Self.INVOICE" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PHOTOS" EntityType="Self.PHOTOS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SHIPPING" EntityType="Self.SHIPPING" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="VENDOR" EntityType="Self.VENDOR" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_BILLING_CREDIT_CARD" Association="Self.FK_BILLING_CREDIT_CARD">
+      <End Role="CREDIT_CARD" EntitySet="CREDIT_CARD" />
+      <End Role="BILLING" EntitySet="BILLING" />
+    </AssociationSet>
+    <AssociationSet Name="FK_BILLING_CUSTOMER" Association="Self.FK_BILLING_CUSTOMER">
+      <End Role="CUSTOMER" EntitySet="CUSTOMER" />
+      <End Role="BILLING" EntitySet="BILLING" />
+    </AssociationSet>
+    <AssociationSet Name="FK_BILLING_VENDOR" Association="Self.FK_BILLING_VENDOR">
+      <End Role="VENDOR" EntitySet="VENDOR" />
+      <End Role="BILLING" EntitySet="BILLING" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CART_CUSTOMER" Association="Self.FK_CART_CUSTOMER">
+      <End Role="CUSTOMER" EntitySet="CUSTOMER" />
+      <End Role="CART" EntitySet="CART" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CART_VENDOR" Association="Self.FK_CART_VENDOR">
+      <End Role="VENDOR" EntitySet="VENDOR" />
+      <End Role="CART" EntitySet="CART" />
+    </AssociationSet>
+    <AssociationSet Name="FK_INVOICE_CART" Association="Self.FK_INVOICE_CART">
+      <End Role="CART" EntitySet="CART" />
+      <End Role="INVOICE" EntitySet="INVOICE" />
+    </AssociationSet>
+    <AssociationSet Name="FK_INVOICE_CUSTOMER" Association="Self.FK_INVOICE_CUSTOMER">
+      <End Role="CUSTOMER" EntitySet="CUSTOMER" />
+      <End Role="INVOICE" EntitySet="INVOICE" />
+    </AssociationSet>
+    <AssociationSet Name="FK_INVOICE_VENDOR" Association="Self.FK_INVOICE_VENDOR">
+      <End Role="VENDOR" EntitySet="VENDOR" />
+      <End Role="INVOICE" EntitySet="INVOICE" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PHOTOS_INVENTORY" Association="Self.FK_PHOTOS_INVENTORY">
+      <End Role="INVENTORY" EntitySet="INVENTORY" />
+      <End Role="PHOTOS" EntitySet="PHOTOS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PHOTOS_VENDOR" Association="Self.FK_PHOTOS_VENDOR">
+      <End Role="VENDOR" EntitySet="VENDOR" />
+      <End Role="PHOTOS" EntitySet="PHOTOS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SHIPPING_CUSTOMER" Association="Self.FK_SHIPPING_CUSTOMER">
+      <End Role="CUSTOMER" EntitySet="CUSTOMER" />
+      <End Role="SHIPPING" EntitySet="SHIPPING" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SHIPPING_VENDOR" Association="Self.FK_SHIPPING_VENDOR">
+      <End Role="VENDOR" EntitySet="VENDOR" />
+      <End Role="SHIPPING" EntitySet="SHIPPING" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
