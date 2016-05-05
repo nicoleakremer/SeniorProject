@@ -16,15 +16,13 @@ namespace Photography
     {
         public int BillingId { get; set; }
         public int CustomerId { get; set; }
-        public Nullable<int> VendorId { get; set; }
         public int CardId { get; set; }
         public string State { get; set; }
         public string Street { get; set; }
         public string City { get; set; }
         public int Zip { get; set; }
     
-        public virtual CREDIT_CARD CREDIT_CARD { get; set; }
         public virtual CUSTOMER CUSTOMER { get; set; }
-        public virtual VENDOR VENDOR { get; set; }
+        public virtual CREDIT_CARD CREDIT_CARD { get; set; }
     }
 }

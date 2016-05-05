@@ -16,13 +16,11 @@ namespace Photography
     {
         public int InvoiceId { get; set; }
         public int CustomerId { get; set; }
-        public Nullable<int> VendorId { get; set; }
         public int CartId { get; set; }
         public Nullable<decimal> TotalCost { get; set; }
         public Nullable<System.DateTime> DateOrder { get; set; }
     
         public virtual CART CART { get; set; }
         public virtual CUSTOMER CUSTOMER { get; set; }
-        public virtual VENDOR VENDOR { get; set; }
     }
 }

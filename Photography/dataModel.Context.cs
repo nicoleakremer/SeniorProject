@@ -15,10 +15,10 @@ namespace Photography
     using System.Data.Entity.Core.Objects;
     using System.Linq;
     
-    public partial class DataModel : DbContext
+    public partial class naKremerEntities : DbContext
     {
-        public DataModel()
-            : base("name=DataModel")
+        public naKremerEntities()
+            : base("name=naKremerEntities")
         {
         }
     
@@ -29,14 +29,73 @@ namespace Photography
     
         public virtual DbSet<BILLING> BILLINGs { get; set; }
         public virtual DbSet<CART> CARTs { get; set; }
-        public virtual DbSet<CREDIT_CARD> CREDIT_CARD { get; set; }
         public virtual DbSet<CUSTOMER> CUSTOMERs { get; set; }
-        public virtual DbSet<INVENTORY> INVENTORies { get; set; }
         public virtual DbSet<INVOICE> INVOICEs { get; set; }
-        public virtual DbSet<Photo> PHOTOS { get; set; }
         public virtual DbSet<SHIPPING> SHIPPINGs { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
-        public virtual DbSet<VENDOR> VENDORs { get; set; }
+        public virtual DbSet<PHOTO_CART> PHOTO_CART { get; set; }
+        public virtual DbSet<Photo> PHOTOS { get; set; }
+        public virtual DbSet<CREDIT_CARD> CREDIT_CARD { get; set; }
+    
+        public virtual int AddCart(string email)
+        {
+            var emailParameter = email != null ?
+                new ObjectParameter("Email", email) :
+                new ObjectParameter("Email", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddCart", emailParameter);
+        }
+    
+        public virtual int AddCustomer(string email, string password, string firstName, string lastName, string phone)
+        {
+            var emailParameter = email != null ?
+                new ObjectParameter("Email", email) :
+                new ObjectParameter("Email", typeof(string));
+    
+            var passwordParameter = password != null ?
+                new ObjectParameter("Password", password) :
+                new ObjectParameter("Password", typeof(string));
+    
+            var firstNameParameter = firstName != null ?
+                new ObjectParameter("FirstName", firstName) :
+                new ObjectParameter("FirstName", typeof(string));
+    
+            var lastNameParameter = lastName != null ?
+                new ObjectParameter("LastName", lastName) :
+                new ObjectParameter("LastName", typeof(string));
+    
+            var phoneParameter = phone != null ?
+                new ObjectParameter("Phone", phone) :
+                new ObjectParameter("Phone", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddCustomer", emailParameter, passwordParameter, firstNameParameter, lastNameParameter, phoneParameter);
+        }
+    
+        public virtual int AddPhotoToCart(Nullable<int> cartId, Nullable<int> photoId, Nullable<int> quantity)
+        {
+            var cartIdParameter = cartId.HasValue ?
+                new ObjectParameter("CartId", cartId) :
+                new ObjectParameter("CartId", typeof(int));
+    
+            var photoIdParameter = photoId.HasValue ?
+                new ObjectParameter("PhotoId", photoId) :
+                new ObjectParameter("PhotoId", typeof(int));
+    
+            var quantityParameter = quantity.HasValue ?
+                new ObjectParameter("Quantity", quantity) :
+                new ObjectParameter("Quantity", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddPhotoToCart", cartIdParameter, photoIdParameter, quantityParameter);
+        }
+    
+        public virtual int DisableCart(string email)
+        {
+            var emailParameter = email != null ?
+                new ObjectParameter("email", email) :
+                new ObjectParameter("email", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DisableCart", emailParameter);
+        }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {
@@ -168,6 +227,115 @@ namespace Photography
                 new ObjectParameter("Grade", typeof(decimal));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("STUDENT_Add", lastNameParameter, firstNameParameter, middleNameParameter, enrollmentDateParameter, courseIDParameter, gradeParameter);
+        }
+    
+        public virtual ObjectResult<string> findPassword(string email)
+        {
+            var emailParameter = email != null ?
+                new ObjectParameter("email", email) :
+                new ObjectParameter("email", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("findPassword", emailParameter);
+        }
+    
+        public virtual ObjectResult<string> findSalt(string email)
+        {
+            var emailParameter = email != null ?
+                new ObjectParameter("email", email) :
+                new ObjectParameter("email", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("findSalt", emailParameter);
+        }
+    
+        public virtual ObjectResult<string> findCredit(Nullable<int> cardId)
+        {
+            var cardIdParameter = cardId.HasValue ?
+                new ObjectParameter("cardId", cardId) :
+                new ObjectParameter("cardId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("findCredit", cardIdParameter);
+        }
+    
+        public virtual ObjectResult<string> findSaltCredit(Nullable<int> cardId)
+        {
+            var cardIdParameter = cardId.HasValue ?
+                new ObjectParameter("cardId", cardId) :
+                new ObjectParameter("cardId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("findSaltCredit", cardIdParameter);
+        }
+    
+        public virtual int RemoveBookFromCart(Nullable<int> cartId, Nullable<int> photoId)
+        {
+            var cartIdParameter = cartId.HasValue ?
+                new ObjectParameter("CartId", cartId) :
+                new ObjectParameter("CartId", typeof(int));
+    
+            var photoIdParameter = photoId.HasValue ?
+                new ObjectParameter("PhotoId", photoId) :
+                new ObjectParameter("PhotoId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("RemoveBookFromCart", cartIdParameter, photoIdParameter);
+        }
+    
+        public virtual int RemoveQuantityOfBookFromCart(Nullable<int> cartId, Nullable<int> photoId, Nullable<int> quantity)
+        {
+            var cartIdParameter = cartId.HasValue ?
+                new ObjectParameter("CartId", cartId) :
+                new ObjectParameter("CartId", typeof(int));
+    
+            var photoIdParameter = photoId.HasValue ?
+                new ObjectParameter("PhotoId", photoId) :
+                new ObjectParameter("PhotoId", typeof(int));
+    
+            var quantityParameter = quantity.HasValue ?
+                new ObjectParameter("Quantity", quantity) :
+                new ObjectParameter("Quantity", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("RemoveQuantityOfBookFromCart", cartIdParameter, photoIdParameter, quantityParameter);
+        }
+    
+        public virtual int RemovePhotoFromCart(Nullable<int> cartId, Nullable<int> photoId)
+        {
+            var cartIdParameter = cartId.HasValue ?
+                new ObjectParameter("CartId", cartId) :
+                new ObjectParameter("CartId", typeof(int));
+    
+            var photoIdParameter = photoId.HasValue ?
+                new ObjectParameter("PhotoId", photoId) :
+                new ObjectParameter("PhotoId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("RemovePhotoFromCart", cartIdParameter, photoIdParameter);
+        }
+    
+        public virtual int RemoveQuantityOfPhotoFromCart(Nullable<int> cartId, Nullable<int> photoId, Nullable<int> quantity)
+        {
+            var cartIdParameter = cartId.HasValue ?
+                new ObjectParameter("CartId", cartId) :
+                new ObjectParameter("CartId", typeof(int));
+    
+            var photoIdParameter = photoId.HasValue ?
+                new ObjectParameter("PhotoId", photoId) :
+                new ObjectParameter("PhotoId", typeof(int));
+    
+            var quantityParameter = quantity.HasValue ?
+                new ObjectParameter("Quantity", quantity) :
+                new ObjectParameter("Quantity", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("RemoveQuantityOfPhotoFromCart", cartIdParameter, photoIdParameter, quantityParameter);
+        }
+    
+        public virtual int removeFromCart(Nullable<int> photoID, Nullable<int> cartID)
+        {
+            var photoIDParameter = photoID.HasValue ?
+                new ObjectParameter("photoID", photoID) :
+                new ObjectParameter("photoID", typeof(int));
+    
+            var cartIDParameter = cartID.HasValue ?
+                new ObjectParameter("cartID", cartID) :
+                new ObjectParameter("cartID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("removeFromCart", photoIDParameter, cartIDParameter);
         }
     }
 }

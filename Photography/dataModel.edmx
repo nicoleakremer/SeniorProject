@@ -4,14 +4,13 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="naKremerModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="naKremerModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="BILLING">
           <Key>
             <PropertyRef Name="BillingId" />
           </Key>
           <Property Name="BillingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CustomerId" Type="int" Nullable="false" />
-          <Property Name="VendorId" Type="int" />
           <Property Name="CardId" Type="int" Nullable="false" />
           <Property Name="State" Type="varchar" MaxLength="5" Nullable="false" />
           <Property Name="Street" Type="varchar" MaxLength="30" Nullable="false" />
@@ -24,7 +23,6 @@
           </Key>
           <Property Name="CartId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CustomerId" Type="int" Nullable="false" />
-          <Property Name="VendorId" Type="int" />
           <Property Name="IsActive" Type="binary" MaxLength="1" />
         </EntityType>
         <EntityType Name="CREDIT_CARD">
@@ -32,31 +30,27 @@
             <PropertyRef Name="CardId" />
           </Key>
           <Property Name="CardId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="CardType" Type="varchar" MaxLength="16" Nullable="false" />
-          <Property Name="CardNumber" Type="bigint" Nullable="false" />
-          <Property Name="NameOnCard" Type="varchar" MaxLength="30" Nullable="false" />
-          <Property Name="ExpirationDate" Type="date" Nullable="false" />
+          <Property Name="CustomerId" Type="int" Nullable="false" />
+          <Property Name="CardType" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CardNumber" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="NameOnCard" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ExpirationDate" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="SecurityCode" Type="int" Nullable="false" />
+          <Property Name="Salt" Type="varchar" MaxLength="150" />
         </EntityType>
         <EntityType Name="CUSTOMER">
           <Key>
             <PropertyRef Name="CustomerId" />
           </Key>
           <Property Name="CustomerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Email" Type="varchar" MaxLength="50" />
-          <Property Name="Password" Type="nchar" MaxLength="10" />
-          <Property Name="FirstName" Type="varchar" MaxLength="25" />
-          <Property Name="LastName" Type="varchar" MaxLength="25" />
+          <Property Name="CardId" Type="int" />
+          <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="25" Nullable="false" />
           <Property Name="Phone" Type="varchar" MaxLength="15" />
-        </EntityType>
-        <EntityType Name="INVENTORY">
-          <Key>
-            <PropertyRef Name="InventoryId" />
-          </Key>
-          <Property Name="InventoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="RetailPrice" Type="money" Nullable="false" />
-          <Property Name="WholeSalePrice" Type="money" Nullable="false" />
-          <Property Name="NumInStock" Type="int" Nullable="false" />
+          <Property Name="Salt" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="Roles" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="INVOICE">
           <Key>
@@ -64,31 +58,35 @@
           </Key>
           <Property Name="InvoiceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CustomerId" Type="int" Nullable="false" />
-          <Property Name="VendorId" Type="int" />
           <Property Name="CartId" Type="int" Nullable="false" />
           <Property Name="TotalCost" Type="money" />
           <Property Name="DateOrder" Type="date" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6013: The table/view 'naKremer.dbo.PHOTO_CART' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+warning 6002: The table/view 'naKremer.dbo.PHOTO_CART' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="PHOTO_CART">
-          <Property Name="PhotoId" Type="int" />
-          <Property Name="CartId" Type="int" />
-          <Property Name="Quantity" Type="int" />
-        </EntityType>-->
+          <Key>
+            <PropertyRef Name="PhotoId" />
+            <PropertyRef Name="CartId" />
+            <PropertyRef Name="Quantity" />
+          </Key>
+          <Property Name="PhotoId" Type="int" Nullable="false" />
+          <Property Name="CartId" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="Date" Type="date" />
+        </EntityType>
         <EntityType Name="PHOTOS">
           <Key>
             <PropertyRef Name="PhotoId" />
           </Key>
           <Property Name="PhotoId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="InventoryId" Type="int" Nullable="false" />
-          <Property Name="VendorId" Type="int" />
           <Property Name="Title" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="FirstName" Type="varchar" MaxLength="50" />
           <Property Name="LastName" Type="varchar" MaxLength="50" />
           <Property Name="Genre" Type="varchar" MaxLength="50" />
           <Property Name="Description" Type="varchar" MaxLength="200" />
           <Property Name="Price" Type="money" />
+          <Property Name="Path" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="SHIPPING">
           <Key>
@@ -96,7 +94,6 @@ warning 6013: The table/view 'naKremer.dbo.PHOTO_CART' does not have a primary k
           </Key>
           <Property Name="ShippingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CustomerId" Type="int" Nullable="false" />
-          <Property Name="VendorId" Type="int" />
           <Property Name="State" Type="varchar" MaxLength="5" Nullable="false" />
           <Property Name="Street" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="City" Type="varchar" MaxLength="30" Nullable="false" />
@@ -111,17 +108,6 @@ warning 6013: The table/view 'naKremer.dbo.PHOTO_CART' does not have a primary k
           <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="version" Type="int" />
           <Property Name="definition" Type="varbinary(max)" />
-        </EntityType>
-        <EntityType Name="VENDOR">
-          <Key>
-            <PropertyRef Name="VendorId" />
-          </Key>
-          <Property Name="VendorId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="FirstName" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="LastName" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Phone" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <Association Name="FK_BILLING_CREDIT_CARD">
           <End Role="CREDIT_CARD" Type="Self.CREDIT_CARD" Multiplicity="1" />
@@ -147,18 +133,6 @@ warning 6013: The table/view 'naKremer.dbo.PHOTO_CART' does not have a primary k
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_BILLING_VENDOR">
-          <End Role="VENDOR" Type="Self.VENDOR" Multiplicity="0..1" />
-          <End Role="BILLING" Type="Self.BILLING" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="VENDOR">
-              <PropertyRef Name="VendorId" />
-            </Principal>
-            <Dependent Role="BILLING">
-              <PropertyRef Name="VendorId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_CART_CUSTOMER">
           <End Role="CUSTOMER" Type="Self.CUSTOMER" Multiplicity="1" />
           <End Role="CART" Type="Self.CART" Multiplicity="*" />
@@ -171,15 +145,15 @@ warning 6013: The table/view 'naKremer.dbo.PHOTO_CART' does not have a primary k
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_CART_VENDOR">
-          <End Role="VENDOR" Type="Self.VENDOR" Multiplicity="0..1" />
-          <End Role="CART" Type="Self.CART" Multiplicity="*" />
+        <Association Name="FK_CUSTOMER_CREDIT_CARD">
+          <End Role="CREDIT_CARD" Type="Self.CREDIT_CARD" Multiplicity="0..1" />
+          <End Role="CUSTOMER" Type="Self.CUSTOMER" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="VENDOR">
-              <PropertyRef Name="VendorId" />
+            <Principal Role="CREDIT_CARD">
+              <PropertyRef Name="CardId" />
             </Principal>
-            <Dependent Role="CART">
-              <PropertyRef Name="VendorId" />
+            <Dependent Role="CUSTOMER">
+              <PropertyRef Name="CardId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -207,45 +181,27 @@ warning 6013: The table/view 'naKremer.dbo.PHOTO_CART' does not have a primary k
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_INVOICE_VENDOR">
-          <End Role="VENDOR" Type="Self.VENDOR" Multiplicity="0..1" />
-          <End Role="INVOICE" Type="Self.INVOICE" Multiplicity="*" />
+        <Association Name="FK_PHOTO_CART_CART">
+          <End Role="CART" Type="Self.CART" Multiplicity="1" />
+          <End Role="PHOTO_CART" Type="Self.PHOTO_CART" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="VENDOR">
-              <PropertyRef Name="VendorId" />
+            <Principal Role="CART">
+              <PropertyRef Name="CartId" />
             </Principal>
-            <Dependent Role="INVOICE">
-              <PropertyRef Name="VendorId" />
+            <Dependent Role="PHOTO_CART">
+              <PropertyRef Name="CartId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <!--Errors Found During Generation:
-error 6004: The table 'naKremer.dbo.PHOTO_CART' is referenced by a relationship, but cannot be found.
-        <Association Name="FK_PHOTO_CART_CART" />-->
-        <!--Errors Found During Generation:
-error 6004: The table 'naKremer.dbo.PHOTO_CART' is referenced by a relationship, but cannot be found.
-        <Association Name="FK_PHOTO_CART_PHOTOS" />-->
-        <Association Name="FK_PHOTOS_INVENTORY">
-          <End Role="INVENTORY" Type="Self.INVENTORY" Multiplicity="1" />
-          <End Role="PHOTOS" Type="Self.PHOTOS" Multiplicity="*" />
+        <Association Name="FK_PHOTO_CART_PHOTOS">
+          <End Role="PHOTOS" Type="Self.PHOTOS" Multiplicity="1" />
+          <End Role="PHOTO_CART" Type="Self.PHOTO_CART" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="INVENTORY">
-              <PropertyRef Name="InventoryId" />
+            <Principal Role="PHOTOS">
+              <PropertyRef Name="PhotoId" />
             </Principal>
-            <Dependent Role="PHOTOS">
-              <PropertyRef Name="InventoryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PHOTOS_VENDOR">
-          <End Role="VENDOR" Type="Self.VENDOR" Multiplicity="0..1" />
-          <End Role="PHOTOS" Type="Self.PHOTOS" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="VENDOR">
-              <PropertyRef Name="VendorId" />
-            </Principal>
-            <Dependent Role="PHOTOS">
-              <PropertyRef Name="VendorId" />
+            <Dependent Role="PHOTO_CART">
+              <PropertyRef Name="PhotoId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -261,19 +217,43 @@ error 6004: The table 'naKremer.dbo.PHOTO_CART' is referenced by a relationship,
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SHIPPING_VENDOR">
-          <End Role="VENDOR" Type="Self.VENDOR" Multiplicity="0..1" />
-          <End Role="SHIPPING" Type="Self.SHIPPING" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="VENDOR">
-              <PropertyRef Name="VendorId" />
-            </Principal>
-            <Dependent Role="SHIPPING">
-              <PropertyRef Name="VendorId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
+        <Function Name="AddCart" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Email" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="AddPhotoToCart" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CartId" Type="int" Mode="In" />
+          <Parameter Name="PhotoId" Type="int" Mode="In" />
+          <Parameter Name="Quantity" Type="int" Mode="In" />
+        </Function>
+        <Function Name="DisableCart" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="email" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="findCredit" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="cardId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="findPassword" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="email" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="findSalt" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="email" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="findSaltCredit" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="cardId" Type="int" Mode="In" />
+        </Function>
         <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="removeFromCart" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="photoID" Type="int" Mode="In" />
+          <Parameter Name="cartID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="RemovePhotoFromCart" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CartId" Type="int" Mode="In" />
+          <Parameter Name="PhotoId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="RemoveQuantityOfPhotoFromCart" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CartId" Type="int" Mode="In" />
+          <Parameter Name="PhotoId" Type="int" Mode="In" />
+          <Parameter Name="Quantity" Type="int" Mode="In" />
+        </Function>
         <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
           <Parameter Name="owner_id" Type="int" Mode="In" />
@@ -304,25 +284,23 @@ error 6004: The table 'naKremer.dbo.PHOTO_CART' is referenced by a relationship,
           <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-        <Function Name="STUDENT_Add" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="LastName" Type="nvarchar" Mode="In" />
-          <Parameter Name="FirstName" Type="nvarchar" Mode="In" />
-          <Parameter Name="MiddleName" Type="nvarchar" Mode="In" />
-          <Parameter Name="EnrollmentDate" Type="datetime" Mode="In" />
-          <Parameter Name="CourseID" Type="int" Mode="In" />
-          <Parameter Name="Grade" Type="decimal" Mode="In" />
-        </Function>
         <EntityContainer Name="naKremerModelStoreContainer">
           <EntitySet Name="BILLING" EntityType="Self.BILLING" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CART" EntityType="Self.CART" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CREDIT_CARD" EntityType="Self.CREDIT_CARD" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CUSTOMER" EntityType="Self.CUSTOMER" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="INVENTORY" EntityType="Self.INVENTORY" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="INVOICE" EntityType="Self.INVOICE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PHOTOS" EntityType="Self.PHOTOS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SHIPPING" EntityType="Self.SHIPPING" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="VENDOR" EntityType="Self.VENDOR" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PHOTO_CART" EntityType="Self.PHOTO_CART" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [PHOTO_CART].[PhotoId] AS [PhotoId], 
+    [PHOTO_CART].[CartId] AS [CartId], 
+    [PHOTO_CART].[Quantity] AS [Quantity], 
+    [PHOTO_CART].[Date] AS [Date]
+    FROM [dbo].[PHOTO_CART] AS [PHOTO_CART]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_BILLING_CREDIT_CARD" Association="Self.FK_BILLING_CREDIT_CARD">
             <End Role="CREDIT_CARD" EntitySet="CREDIT_CARD" />
             <End Role="BILLING" EntitySet="BILLING" />
@@ -331,17 +309,13 @@ error 6004: The table 'naKremer.dbo.PHOTO_CART' is referenced by a relationship,
             <End Role="CUSTOMER" EntitySet="CUSTOMER" />
             <End Role="BILLING" EntitySet="BILLING" />
           </AssociationSet>
-          <AssociationSet Name="FK_BILLING_VENDOR" Association="Self.FK_BILLING_VENDOR">
-            <End Role="VENDOR" EntitySet="VENDOR" />
-            <End Role="BILLING" EntitySet="BILLING" />
-          </AssociationSet>
           <AssociationSet Name="FK_CART_CUSTOMER" Association="Self.FK_CART_CUSTOMER">
             <End Role="CUSTOMER" EntitySet="CUSTOMER" />
             <End Role="CART" EntitySet="CART" />
           </AssociationSet>
-          <AssociationSet Name="FK_CART_VENDOR" Association="Self.FK_CART_VENDOR">
-            <End Role="VENDOR" EntitySet="VENDOR" />
-            <End Role="CART" EntitySet="CART" />
+          <AssociationSet Name="FK_CUSTOMER_CREDIT_CARD" Association="Self.FK_CUSTOMER_CREDIT_CARD">
+            <End Role="CREDIT_CARD" EntitySet="CREDIT_CARD" />
+            <End Role="CUSTOMER" EntitySet="CUSTOMER" />
           </AssociationSet>
           <AssociationSet Name="FK_INVOICE_CART" Association="Self.FK_INVOICE_CART">
             <End Role="CART" EntitySet="CART" />
@@ -351,29 +325,20 @@ error 6004: The table 'naKremer.dbo.PHOTO_CART' is referenced by a relationship,
             <End Role="CUSTOMER" EntitySet="CUSTOMER" />
             <End Role="INVOICE" EntitySet="INVOICE" />
           </AssociationSet>
-          <AssociationSet Name="FK_INVOICE_VENDOR" Association="Self.FK_INVOICE_VENDOR">
-            <End Role="VENDOR" EntitySet="VENDOR" />
-            <End Role="INVOICE" EntitySet="INVOICE" />
+          <AssociationSet Name="FK_PHOTO_CART_CART" Association="Self.FK_PHOTO_CART_CART">
+            <End Role="CART" EntitySet="CART" />
+            <End Role="PHOTO_CART" EntitySet="PHOTO_CART" />
           </AssociationSet>
-          <AssociationSet Name="FK_PHOTOS_INVENTORY" Association="Self.FK_PHOTOS_INVENTORY">
-            <End Role="INVENTORY" EntitySet="INVENTORY" />
+          <AssociationSet Name="FK_PHOTO_CART_PHOTOS" Association="Self.FK_PHOTO_CART_PHOTOS">
             <End Role="PHOTOS" EntitySet="PHOTOS" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PHOTOS_VENDOR" Association="Self.FK_PHOTOS_VENDOR">
-            <End Role="VENDOR" EntitySet="VENDOR" />
-            <End Role="PHOTOS" EntitySet="PHOTOS" />
+            <End Role="PHOTO_CART" EntitySet="PHOTO_CART" />
           </AssociationSet>
           <AssociationSet Name="FK_SHIPPING_CUSTOMER" Association="Self.FK_SHIPPING_CUSTOMER">
             <End Role="CUSTOMER" EntitySet="CUSTOMER" />
             <End Role="SHIPPING" EntitySet="SHIPPING" />
           </AssociationSet>
-          <AssociationSet Name="FK_SHIPPING_VENDOR" Association="Self.FK_SHIPPING_VENDOR">
-            <End Role="VENDOR" EntitySet="VENDOR" />
-            <End Role="SHIPPING" EntitySet="SHIPPING" />
-          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="naKremerModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -383,15 +348,13 @@ error 6004: The table 'naKremer.dbo.PHOTO_CART' is referenced by a relationship,
           </Key>
           <Property Name="BillingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CustomerId" Type="Int32" Nullable="false" />
-          <Property Name="VendorId" Type="Int32" />
           <Property Name="CardId" Type="Int32" Nullable="false" />
           <Property Name="State" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Street" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="City" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Zip" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="CREDIT_CARD" Relationship="Self.FK_BILLING_CREDIT_CARD" FromRole="BILLING" ToRole="CREDIT_CARD" />
           <NavigationProperty Name="CUSTOMER" Relationship="Self.FK_BILLING_CUSTOMER" FromRole="BILLING" ToRole="CUSTOMER" />
-          <NavigationProperty Name="VENDOR" Relationship="Self.FK_BILLING_VENDOR" FromRole="BILLING" ToRole="VENDOR" />
+          <NavigationProperty Name="CREDIT_CARD" Relationship="naKremerModel.FK_BILLING_CREDIT_CARD" FromRole="BILLING" ToRole="CREDIT_CARD" />
         </EntityType>
         <EntityType Name="CART">
           <Key>
@@ -399,78 +362,43 @@ error 6004: The table 'naKremer.dbo.PHOTO_CART' is referenced by a relationship,
           </Key>
           <Property Name="CartId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CustomerId" Type="Int32" Nullable="false" />
-          <Property Name="VendorId" Type="Int32" />
           <Property Name="IsActive" Type="Binary" MaxLength="1" FixedLength="true" />
           <NavigationProperty Name="CUSTOMER" Relationship="Self.FK_CART_CUSTOMER" FromRole="CART" ToRole="CUSTOMER" />
-          <NavigationProperty Name="VENDOR" Relationship="Self.FK_CART_VENDOR" FromRole="CART" ToRole="VENDOR" />
           <NavigationProperty Name="INVOICEs" Relationship="Self.FK_INVOICE_CART" FromRole="CART" ToRole="INVOICE" />
-        </EntityType>
-        <EntityType Name="CREDIT_CARD">
-          <Key>
-            <PropertyRef Name="CardId" />
-          </Key>
-          <Property Name="CardId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CardType" Type="String" MaxLength="16" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="CardNumber" Type="Int64" Nullable="false" />
-          <Property Name="NameOnCard" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="ExpirationDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="SecurityCode" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="BILLINGs" Relationship="Self.FK_BILLING_CREDIT_CARD" FromRole="CREDIT_CARD" ToRole="BILLING" />
+          <NavigationProperty Name="PHOTO_CART" Relationship="naKremerModel.FK_PHOTO_CART_CART" FromRole="CART" ToRole="PHOTO_CART" />
         </EntityType>
         <EntityType Name="CUSTOMER">
           <Key>
             <PropertyRef Name="CustomerId" />
           </Key>
           <Property Name="CustomerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Password" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="FirstName" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Name="LastName" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Phone" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Salt" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="BILLINGs" Relationship="Self.FK_BILLING_CUSTOMER" FromRole="CUSTOMER" ToRole="BILLING" />
           <NavigationProperty Name="CARTs" Relationship="Self.FK_CART_CUSTOMER" FromRole="CUSTOMER" ToRole="CART" />
           <NavigationProperty Name="INVOICEs" Relationship="Self.FK_INVOICE_CUSTOMER" FromRole="CUSTOMER" ToRole="INVOICE" />
           <NavigationProperty Name="SHIPPINGs" Relationship="Self.FK_SHIPPING_CUSTOMER" FromRole="CUSTOMER" ToRole="SHIPPING" />
-        </EntityType>
-        <EntityType Name="INVENTORY">
-          <Key>
-            <PropertyRef Name="InventoryId" />
-          </Key>
-          <Property Name="InventoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="RetailPrice" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
-          <Property Name="WholeSalePrice" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
-          <Property Name="NumInStock" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="PHOTOS" Relationship="Self.FK_PHOTOS_INVENTORY" FromRole="INVENTORY" ToRole="PHOTOS" />
-        </EntityType>
+          <Property Name="Roles" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CUSTOMER1" Relationship="naKremerModel.FK_CUSTOMER_CUSTOMER" FromRole="CUSTOMER" ToRole="CUSTOMER1" />
+          <NavigationProperty Name="CUSTOMER2" Relationship="naKremerModel.FK_CUSTOMER_CUSTOMER" FromRole="CUSTOMER1" ToRole="CUSTOMER" />
+          <Property Name="CardId" Type="Int32" />
+          <NavigationProperty Name="CREDIT_CARD" Relationship="naKremerModel.FK_CUSTOMER_CREDIT_CARD" FromRole="CUSTOMER" ToRole="CREDIT_CARD" />
+          </EntityType>
         <EntityType Name="INVOICE">
           <Key>
             <PropertyRef Name="InvoiceId" />
           </Key>
           <Property Name="InvoiceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CustomerId" Type="Int32" Nullable="false" />
-          <Property Name="VendorId" Type="Int32" />
           <Property Name="CartId" Type="Int32" Nullable="false" />
           <Property Name="TotalCost" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="DateOrder" Type="DateTime" Precision="0" />
           <NavigationProperty Name="CART" Relationship="Self.FK_INVOICE_CART" FromRole="INVOICE" ToRole="CART" />
           <NavigationProperty Name="CUSTOMER" Relationship="Self.FK_INVOICE_CUSTOMER" FromRole="INVOICE" ToRole="CUSTOMER" />
-          <NavigationProperty Name="VENDOR" Relationship="Self.FK_INVOICE_VENDOR" FromRole="INVOICE" ToRole="VENDOR" />
-        </EntityType>
-        <EntityType Name="Photo">
-          <Key>
-            <PropertyRef Name="PhotoId" />
-          </Key>
-          <Property Name="PhotoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="InventoryId" Type="Int32" Nullable="false" />
-          <Property Name="VendorId" Type="Int32" />
-          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Genre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="Price" Type="Decimal" Precision="19" Scale="4" />
-          <NavigationProperty Name="INVENTORY" Relationship="Self.FK_PHOTOS_INVENTORY" FromRole="PHOTOS" ToRole="INVENTORY" />
-          <NavigationProperty Name="VENDOR" Relationship="Self.FK_PHOTOS_VENDOR" FromRole="PHOTOS" ToRole="VENDOR" />
         </EntityType>
         <EntityType Name="SHIPPING">
           <Key>
@@ -478,13 +406,11 @@ error 6004: The table 'naKremer.dbo.PHOTO_CART' is referenced by a relationship,
           </Key>
           <Property Name="ShippingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CustomerId" Type="Int32" Nullable="false" />
-          <Property Name="VendorId" Type="Int32" />
           <Property Name="State" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Street" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="City" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Zip" Type="Int32" Nullable="false" />
           <NavigationProperty Name="CUSTOMER" Relationship="Self.FK_SHIPPING_CUSTOMER" FromRole="SHIPPING" ToRole="CUSTOMER" />
-          <NavigationProperty Name="VENDOR" Relationship="Self.FK_SHIPPING_VENDOR" FromRole="SHIPPING" ToRole="VENDOR" />
         </EntityType>
         <EntityType Name="sysdiagram">
           <Key>
@@ -496,34 +422,6 @@ error 6004: The table 'naKremer.dbo.PHOTO_CART' is referenced by a relationship,
           <Property Name="version" Type="Int32" />
           <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
-        <EntityType Name="VENDOR">
-          <Key>
-            <PropertyRef Name="VendorId" />
-          </Key>
-          <Property Name="VendorId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="BILLINGs" Relationship="Self.FK_BILLING_VENDOR" FromRole="VENDOR" ToRole="BILLING" />
-          <NavigationProperty Name="CARTs" Relationship="Self.FK_CART_VENDOR" FromRole="VENDOR" ToRole="CART" />
-          <NavigationProperty Name="INVOICEs" Relationship="Self.FK_INVOICE_VENDOR" FromRole="VENDOR" ToRole="INVOICE" />
-          <NavigationProperty Name="PHOTOS" Relationship="Self.FK_PHOTOS_VENDOR" FromRole="VENDOR" ToRole="PHOTOS" />
-          <NavigationProperty Name="SHIPPINGs" Relationship="Self.FK_SHIPPING_VENDOR" FromRole="VENDOR" ToRole="SHIPPING" />
-        </EntityType>
-        <Association Name="FK_BILLING_CREDIT_CARD">
-          <End Role="CREDIT_CARD" Type="Self.CREDIT_CARD" Multiplicity="1" />
-          <End Role="BILLING" Type="Self.BILLING" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CREDIT_CARD">
-              <PropertyRef Name="CardId" />
-            </Principal>
-            <Dependent Role="BILLING">
-              <PropertyRef Name="CardId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_BILLING_CUSTOMER">
           <End Role="CUSTOMER" Type="Self.CUSTOMER" Multiplicity="1" />
           <End Role="BILLING" Type="Self.BILLING" Multiplicity="*" />
@@ -536,18 +434,6 @@ error 6004: The table 'naKremer.dbo.PHOTO_CART' is referenced by a relationship,
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_BILLING_VENDOR">
-          <End Role="VENDOR" Type="Self.VENDOR" Multiplicity="0..1" />
-          <End Role="BILLING" Type="Self.BILLING" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="VENDOR">
-              <PropertyRef Name="VendorId" />
-            </Principal>
-            <Dependent Role="BILLING">
-              <PropertyRef Name="VendorId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_CART_CUSTOMER">
           <End Role="CUSTOMER" Type="Self.CUSTOMER" Multiplicity="1" />
           <End Role="CART" Type="Self.CART" Multiplicity="*" />
@@ -557,18 +443,6 @@ error 6004: The table 'naKremer.dbo.PHOTO_CART' is referenced by a relationship,
             </Principal>
             <Dependent Role="CART">
               <PropertyRef Name="CustomerId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CART_VENDOR">
-          <End Role="VENDOR" Type="Self.VENDOR" Multiplicity="0..1" />
-          <End Role="CART" Type="Self.CART" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="VENDOR">
-              <PropertyRef Name="VendorId" />
-            </Principal>
-            <Dependent Role="CART">
-              <PropertyRef Name="VendorId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -608,83 +482,19 @@ error 6004: The table 'naKremer.dbo.PHOTO_CART' is referenced by a relationship,
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PHOTOS_INVENTORY">
-          <End Role="INVENTORY" Type="Self.INVENTORY" Multiplicity="1" />
-          <End Role="PHOTOS" Type="Self.Photo" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="INVENTORY">
-              <PropertyRef Name="InventoryId" />
-            </Principal>
-            <Dependent Role="PHOTOS">
-              <PropertyRef Name="InventoryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_INVOICE_VENDOR">
-          <End Role="VENDOR" Type="Self.VENDOR" Multiplicity="0..1" />
-          <End Role="INVOICE" Type="Self.INVOICE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="VENDOR">
-              <PropertyRef Name="VendorId" />
-            </Principal>
-            <Dependent Role="INVOICE">
-              <PropertyRef Name="VendorId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PHOTOS_VENDOR">
-          <End Role="VENDOR" Type="Self.VENDOR" Multiplicity="0..1" />
-          <End Role="PHOTOS" Type="Self.Photo" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="VENDOR">
-              <PropertyRef Name="VendorId" />
-            </Principal>
-            <Dependent Role="PHOTOS">
-              <PropertyRef Name="VendorId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SHIPPING_VENDOR">
-          <End Role="VENDOR" Type="Self.VENDOR" Multiplicity="0..1" />
-          <End Role="SHIPPING" Type="Self.SHIPPING" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="VENDOR">
-              <PropertyRef Name="VendorId" />
-            </Principal>
-            <Dependent Role="SHIPPING">
-              <PropertyRef Name="VendorId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityContainer Name="DataModel" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="naKremerEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="BILLINGs" EntityType="Self.BILLING" />
           <EntitySet Name="CARTs" EntityType="Self.CART" />
-          <EntitySet Name="CREDIT_CARD" EntityType="Self.CREDIT_CARD" />
           <EntitySet Name="CUSTOMERs" EntityType="Self.CUSTOMER" />
-          <EntitySet Name="INVENTORies" EntityType="Self.INVENTORY" />
           <EntitySet Name="INVOICEs" EntityType="Self.INVOICE" />
-          <EntitySet Name="PHOTOS" EntityType="Self.Photo" />
           <EntitySet Name="SHIPPINGs" EntityType="Self.SHIPPING" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
-          <EntitySet Name="VENDORs" EntityType="Self.VENDOR" />
-          <AssociationSet Name="FK_BILLING_CREDIT_CARD" Association="Self.FK_BILLING_CREDIT_CARD">
-            <End Role="CREDIT_CARD" EntitySet="CREDIT_CARD" />
-            <End Role="BILLING" EntitySet="BILLINGs" />
-          </AssociationSet>
           <AssociationSet Name="FK_BILLING_CUSTOMER" Association="Self.FK_BILLING_CUSTOMER">
             <End Role="CUSTOMER" EntitySet="CUSTOMERs" />
             <End Role="BILLING" EntitySet="BILLINGs" />
           </AssociationSet>
-          <AssociationSet Name="FK_BILLING_VENDOR" Association="Self.FK_BILLING_VENDOR">
-            <End Role="VENDOR" EntitySet="VENDORs" />
-            <End Role="BILLING" EntitySet="BILLINGs" />
-          </AssociationSet>
           <AssociationSet Name="FK_CART_CUSTOMER" Association="Self.FK_CART_CUSTOMER">
             <End Role="CUSTOMER" EntitySet="CUSTOMERs" />
-            <End Role="CART" EntitySet="CARTs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CART_VENDOR" Association="Self.FK_CART_VENDOR">
-            <End Role="VENDOR" EntitySet="VENDORs" />
             <End Role="CART" EntitySet="CARTs" />
           </AssociationSet>
           <AssociationSet Name="FK_INVOICE_CART" Association="Self.FK_INVOICE_CART">
@@ -699,22 +509,24 @@ error 6004: The table 'naKremer.dbo.PHOTO_CART' is referenced by a relationship,
             <End Role="CUSTOMER" EntitySet="CUSTOMERs" />
             <End Role="SHIPPING" EntitySet="SHIPPINGs" />
           </AssociationSet>
-          <AssociationSet Name="FK_PHOTOS_INVENTORY" Association="Self.FK_PHOTOS_INVENTORY">
-            <End Role="INVENTORY" EntitySet="INVENTORies" />
-            <End Role="PHOTOS" EntitySet="PHOTOS" />
-          </AssociationSet>
-          <AssociationSet Name="FK_INVOICE_VENDOR" Association="Self.FK_INVOICE_VENDOR">
-            <End Role="VENDOR" EntitySet="VENDORs" />
-            <End Role="INVOICE" EntitySet="INVOICEs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PHOTOS_VENDOR" Association="Self.FK_PHOTOS_VENDOR">
-            <End Role="VENDOR" EntitySet="VENDORs" />
-            <End Role="PHOTOS" EntitySet="PHOTOS" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SHIPPING_VENDOR" Association="Self.FK_SHIPPING_VENDOR">
-            <End Role="VENDOR" EntitySet="VENDORs" />
-            <End Role="SHIPPING" EntitySet="SHIPPINGs" />
-          </AssociationSet>
+          <FunctionImport Name="AddCart">
+          <Parameter Name="Email" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="AddCustomer">
+            <Parameter Name="Email" Mode="In" Type="String" />
+            <Parameter Name="Password" Mode="In" Type="String" />
+            <Parameter Name="FirstName" Mode="In" Type="String" />
+            <Parameter Name="LastName" Mode="In" Type="String" />
+            <Parameter Name="Phone" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="AddPhotoToCart">
+            <Parameter Name="CartId" Mode="In" Type="Int32" />
+            <Parameter Name="PhotoId" Mode="In" Type="Int32" />
+            <Parameter Name="Quantity" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="DisableCart">
+          <Parameter Name="email" Mode="In" Type="String" />
+          </FunctionImport>
           <FunctionImport Name="sp_alterdiagram">
             <Parameter Name="diagramname" Mode="In" Type="String" />
             <Parameter Name="owner_id" Mode="In" Type="Int32" />
@@ -753,7 +565,64 @@ error 6004: The table 'naKremer.dbo.PHOTO_CART' is referenced by a relationship,
             <Parameter Name="CourseID" Mode="In" Type="Int32" />
             <Parameter Name="Grade" Mode="In" Type="Decimal" />
           </FunctionImport>
-        </EntityContainer>
+          <FunctionImport Name="findPassword" ReturnType="Collection(String)">
+          <Parameter Name="email" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="findSalt" ReturnType="Collection(String)">
+          <Parameter Name="email" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="PHOTO_CART" EntityType="naKremerModel.PHOTO_CART" />
+          <AssociationSet Name="FK_PHOTO_CART_CART" Association="naKremerModel.FK_PHOTO_CART_CART">
+            <End Role="CART" EntitySet="CARTs" />
+            <End Role="PHOTO_CART" EntitySet="PHOTO_CART" />
+          </AssociationSet>
+          <FunctionImport Name="findCredit" ReturnType="Collection(String)">
+          <Parameter Name="cardId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="findSaltCredit" ReturnType="Collection(String)">
+          <Parameter Name="cardId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="RemoveBookFromCart">
+            <Parameter Name="CartId" Mode="In" Type="Int32" />
+            <Parameter Name="PhotoId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="RemoveQuantityOfBookFromCart">
+            <Parameter Name="CartId" Mode="In" Type="Int32" />
+            <Parameter Name="PhotoId" Mode="In" Type="Int32" />
+            <Parameter Name="Quantity" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="RemovePhotoFromCart">
+            <Parameter Name="CartId" Mode="In" Type="Int32" />
+            <Parameter Name="PhotoId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="RemoveQuantityOfPhotoFromCart">
+            <Parameter Name="CartId" Mode="In" Type="Int32" />
+            <Parameter Name="PhotoId" Mode="In" Type="Int32" />
+            <Parameter Name="Quantity" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="PHOTOS" EntityType="naKremerModel.Photo" />
+          <AssociationSet Name="FK_PHOTO_CART_PHOTOS" Association="naKremerModel.FK_PHOTO_CART_PHOTOS">
+            <End Role="Photo" EntitySet="PHOTOS" />
+            <End Role="PHOTO_CART" EntitySet="PHOTO_CART" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CUSTOMER_CUSTOMER" Association="naKremerModel.FK_CUSTOMER_CUSTOMER">
+            <End Role="CUSTOMER" EntitySet="CUSTOMERs" />
+            <End Role="CUSTOMER1" EntitySet="CUSTOMERs" />
+          </AssociationSet>
+          <EntitySet Name="CREDIT_CARD" EntityType="naKremerModel.CREDIT_CARD" />
+          <AssociationSet Name="FK_BILLING_CREDIT_CARD" Association="naKremerModel.FK_BILLING_CREDIT_CARD">
+            <End Role="CREDIT_CARD" EntitySet="CREDIT_CARD" />
+            <End Role="BILLING" EntitySet="BILLINGs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CUSTOMER_CREDIT_CARD" Association="naKremerModel.FK_CUSTOMER_CREDIT_CARD">
+            <End Role="CREDIT_CARD" EntitySet="CREDIT_CARD" />
+            <End Role="CUSTOMER" EntitySet="CUSTOMERs" />
+          </AssociationSet>
+          <FunctionImport Name="removeFromCart">
+            <Parameter Name="photoID" Mode="In" Type="Int32" />
+            <Parameter Name="cartID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
           <Property Type="Binary" Name="definition" Nullable="true" />
@@ -765,18 +634,119 @@ error 6004: The table 'naKremer.dbo.PHOTO_CART' is referenced by a relationship,
           <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
           <Property Type="Int32" Name="OwnerID" Nullable="false" />
         </ComplexType>
-      </Schema>
+        <EntityType Name="PHOTO_CART">
+          <Key>
+            <PropertyRef Name="PhotoId" />
+            <PropertyRef Name="CartId" />
+            <PropertyRef Name="Quantity" />
+          </Key>
+          <Property Name="PhotoId" Type="Int32" Nullable="false" />
+          <Property Name="CartId" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="CART" Relationship="naKremerModel.FK_PHOTO_CART_CART" FromRole="PHOTO_CART" ToRole="CART" />
+          <NavigationProperty Name="Photo" Relationship="naKremerModel.FK_PHOTO_CART_PHOTOS" FromRole="PHOTO_CART" ToRole="Photo" />
+        </EntityType>
+        <Association Name="FK_PHOTO_CART_CART">
+          <End Type="naKremerModel.CART" Role="CART" Multiplicity="1" />
+          <End Type="naKremerModel.PHOTO_CART" Role="PHOTO_CART" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CART">
+              <PropertyRef Name="CartId" />
+            </Principal>
+            <Dependent Role="PHOTO_CART">
+              <PropertyRef Name="CartId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Photo">
+          <Key>
+            <PropertyRef Name="PhotoId" />
+          </Key>
+          <Property Name="PhotoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Genre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Price" Type="Decimal" Precision="19" Scale="4" />
+          <NavigationProperty Name="PHOTO_CART" Relationship="naKremerModel.FK_PHOTO_CART_PHOTOS" FromRole="Photo" ToRole="PHOTO_CART" />
+          <Property Name="Path" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_PHOTO_CART_PHOTOS">
+          <End Type="naKremerModel.Photo" Role="Photo" Multiplicity="1" />
+          <End Type="naKremerModel.PHOTO_CART" Role="PHOTO_CART" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Photo">
+              <PropertyRef Name="PhotoId" />
+            </Principal>
+            <Dependent Role="PHOTO_CART">
+              <PropertyRef Name="PhotoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CUSTOMER_CUSTOMER">
+          <End Type="naKremerModel.CUSTOMER" Role="CUSTOMER" Multiplicity="1" />
+          <End Type="naKremerModel.CUSTOMER" Role="CUSTOMER1" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="CUSTOMER">
+              <PropertyRef Name="CustomerId" />
+            </Principal>
+            <Dependent Role="CUSTOMER1">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CREDIT_CARD">
+          <Key>
+            <PropertyRef Name="CardId" />
+          </Key>
+          <Property Name="CardId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerId" Type="Int32" Nullable="false" />
+          <Property Name="CardType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CardNumber" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="NameOnCard" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ExpirationDate" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SecurityCode" Type="Int32" Nullable="false" />
+          <Property Name="Salt" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="BILLINGs" Relationship="naKremerModel.FK_BILLING_CREDIT_CARD" FromRole="CREDIT_CARD" ToRole="BILLING" />
+          <NavigationProperty Name="CUSTOMERs" Relationship="naKremerModel.FK_CUSTOMER_CREDIT_CARD" FromRole="CREDIT_CARD" ToRole="CUSTOMER" />
+        </EntityType>
+        <Association Name="FK_BILLING_CREDIT_CARD">
+          <End Type="naKremerModel.CREDIT_CARD" Role="CREDIT_CARD" Multiplicity="1" />
+          <End Type="naKremerModel.BILLING" Role="BILLING" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CREDIT_CARD">
+              <PropertyRef Name="CardId" />
+            </Principal>
+            <Dependent Role="BILLING">
+              <PropertyRef Name="CardId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CUSTOMER_CREDIT_CARD">
+          <End Type="naKremerModel.CREDIT_CARD" Role="CREDIT_CARD" Multiplicity="0..1" />
+          <End Type="naKremerModel.CUSTOMER" Role="CUSTOMER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CREDIT_CARD">
+              <PropertyRef Name="CardId" />
+            </Principal>
+            <Dependent Role="CUSTOMER">
+              <PropertyRef Name="CardId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="naKremerModelStoreContainer" CdmEntityContainer="DataModel">
+        <EntityContainerMapping StorageEntityContainer="naKremerModelStoreContainer" CdmEntityContainer="naKremerEntities">
           <EntitySetMapping Name="BILLINGs">
             <EntityTypeMapping TypeName="naKremerModel.BILLING">
               <MappingFragment StoreEntitySet="BILLING">
                 <ScalarProperty Name="BillingId" ColumnName="BillingId" />
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-                <ScalarProperty Name="VendorId" ColumnName="VendorId" />
                 <ScalarProperty Name="CardId" ColumnName="CardId" />
                 <ScalarProperty Name="State" ColumnName="State" />
                 <ScalarProperty Name="Street" ColumnName="Street" />
@@ -790,42 +760,22 @@ error 6004: The table 'naKremer.dbo.PHOTO_CART' is referenced by a relationship,
               <MappingFragment StoreEntitySet="CART">
                 <ScalarProperty Name="CartId" ColumnName="CartId" />
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-                <ScalarProperty Name="VendorId" ColumnName="VendorId" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CREDIT_CARD">
-            <EntityTypeMapping TypeName="naKremerModel.CREDIT_CARD">
-              <MappingFragment StoreEntitySet="CREDIT_CARD">
-                <ScalarProperty Name="CardId" ColumnName="CardId" />
-                <ScalarProperty Name="CardType" ColumnName="CardType" />
-                <ScalarProperty Name="CardNumber" ColumnName="CardNumber" />
-                <ScalarProperty Name="NameOnCard" ColumnName="NameOnCard" />
-                <ScalarProperty Name="ExpirationDate" ColumnName="ExpirationDate" />
-                <ScalarProperty Name="SecurityCode" ColumnName="SecurityCode" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CUSTOMERs">
             <EntityTypeMapping TypeName="naKremerModel.CUSTOMER">
               <MappingFragment StoreEntitySet="CUSTOMER">
+                <ScalarProperty Name="CardId" ColumnName="CardId" />
+                <ScalarProperty Name="Roles" ColumnName="Roles" />
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="INVENTORies">
-            <EntityTypeMapping TypeName="naKremerModel.INVENTORY">
-              <MappingFragment StoreEntitySet="INVENTORY">
-                <ScalarProperty Name="InventoryId" ColumnName="InventoryId" />
-                <ScalarProperty Name="RetailPrice" ColumnName="RetailPrice" />
-                <ScalarProperty Name="WholeSalePrice" ColumnName="WholeSalePrice" />
-                <ScalarProperty Name="NumInStock" ColumnName="NumInStock" />
+                <ScalarProperty Name="Salt" ColumnName="Salt" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -834,25 +784,9 @@ error 6004: The table 'naKremer.dbo.PHOTO_CART' is referenced by a relationship,
               <MappingFragment StoreEntitySet="INVOICE">
                 <ScalarProperty Name="InvoiceId" ColumnName="InvoiceId" />
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-                <ScalarProperty Name="VendorId" ColumnName="VendorId" />
                 <ScalarProperty Name="CartId" ColumnName="CartId" />
                 <ScalarProperty Name="TotalCost" ColumnName="TotalCost" />
                 <ScalarProperty Name="DateOrder" ColumnName="DateOrder" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PHOTOS">
-            <EntityTypeMapping TypeName="naKremerModel.Photo">
-              <MappingFragment StoreEntitySet="PHOTOS">
-                <ScalarProperty Name="PhotoId" ColumnName="PhotoId" />
-                <ScalarProperty Name="InventoryId" ColumnName="InventoryId" />
-                <ScalarProperty Name="VendorId" ColumnName="VendorId" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="Genre" ColumnName="Genre" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -861,7 +795,6 @@ error 6004: The table 'naKremer.dbo.PHOTO_CART' is referenced by a relationship,
               <MappingFragment StoreEntitySet="SHIPPING">
                 <ScalarProperty Name="ShippingId" ColumnName="ShippingId" />
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-                <ScalarProperty Name="VendorId" ColumnName="VendorId" />
                 <ScalarProperty Name="State" ColumnName="State" />
                 <ScalarProperty Name="Street" ColumnName="Street" />
                 <ScalarProperty Name="City" ColumnName="City" />
@@ -880,18 +813,9 @@ error 6004: The table 'naKremer.dbo.PHOTO_CART' is referenced by a relationship,
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="VENDORs">
-            <EntityTypeMapping TypeName="naKremerModel.VENDOR">
-              <MappingFragment StoreEntitySet="VENDOR">
-                <ScalarProperty Name="VendorId" ColumnName="VendorId" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="AddCart" FunctionName="naKremerModel.Store.AddCart" />
+          <FunctionImportMapping FunctionImportName="AddPhotoToCart" FunctionName="naKremerModel.Store.AddPhotoToCart" />
+          <FunctionImportMapping FunctionImportName="DisableCart" FunctionName="naKremerModel.Store.DisableCart" />
           <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="naKremerModel.Store.sp_alterdiagram" />
           <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="naKremerModel.Store.sp_creatediagram" />
           <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="naKremerModel.Store.sp_dropdiagram" />
@@ -916,8 +840,52 @@ error 6004: The table 'naKremer.dbo.PHOTO_CART' is referenced by a relationship,
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="naKremerModel.Store.sp_renamediagram" />
           <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="naKremerModel.Store.sp_upgraddiagrams" />
-          <FunctionImportMapping FunctionImportName="STUDENT_Add" FunctionName="naKremerModel.Store.STUDENT_Add" />
-        </EntityContainerMapping>
+          <FunctionImportMapping FunctionImportName="findPassword" FunctionName="naKremerModel.Store.findPassword" />
+          <FunctionImportMapping FunctionImportName="findSalt" FunctionName="naKremerModel.Store.findSalt" />
+          <EntitySetMapping Name="PHOTO_CART">
+            <EntityTypeMapping TypeName="naKremerModel.PHOTO_CART">
+              <MappingFragment StoreEntitySet="PHOTO_CART">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="CartId" ColumnName="CartId" />
+                <ScalarProperty Name="PhotoId" ColumnName="PhotoId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="findCredit" FunctionName="naKremerModel.Store.findCredit" />
+          <FunctionImportMapping FunctionImportName="findSaltCredit" FunctionName="naKremerModel.Store.findSaltCredit" />
+          <FunctionImportMapping FunctionImportName="RemovePhotoFromCart" FunctionName="naKremerModel.Store.RemovePhotoFromCart" />
+          <FunctionImportMapping FunctionImportName="RemoveQuantityOfPhotoFromCart" FunctionName="naKremerModel.Store.RemoveQuantityOfPhotoFromCart" />
+          <EntitySetMapping Name="PHOTOS">
+            <EntityTypeMapping TypeName="naKremerModel.Photo">
+              <MappingFragment StoreEntitySet="PHOTOS">
+                <ScalarProperty Name="Path" ColumnName="Path" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Genre" ColumnName="Genre" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="PhotoId" ColumnName="PhotoId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CREDIT_CARD">
+            <EntityTypeMapping TypeName="naKremerModel.CREDIT_CARD">
+              <MappingFragment StoreEntitySet="CREDIT_CARD">
+                <ScalarProperty Name="Salt" ColumnName="Salt" />
+                <ScalarProperty Name="SecurityCode" ColumnName="SecurityCode" />
+                <ScalarProperty Name="ExpirationDate" ColumnName="ExpirationDate" />
+                <ScalarProperty Name="NameOnCard" ColumnName="NameOnCard" />
+                <ScalarProperty Name="CardNumber" ColumnName="CardNumber" />
+                <ScalarProperty Name="CardType" ColumnName="CardType" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="CardId" ColumnName="CardId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="removeFromCart" FunctionName="naKremerModel.Store.removeFromCart" />
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

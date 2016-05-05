@@ -1,0 +1,42 @@
+﻿@model Photography.PHOTO_CART
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>PHOTO_CART</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CART.CartId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CART.CartId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Photo.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Photo.Title)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

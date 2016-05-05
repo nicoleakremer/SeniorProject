@@ -17,15 +17,19 @@ namespace Photography
         public CREDIT_CARD()
         {
             this.BILLINGs = new HashSet<BILLING>();
+            this.CUSTOMERs = new HashSet<CUSTOMER>();
         }
     
         public int CardId { get; set; }
+        public int CustomerId { get; set; }
         public string CardType { get; set; }
-        public long CardNumber { get; set; }
+        public string CardNumber { get; set; }
         public string NameOnCard { get; set; }
-        public System.DateTime ExpirationDate { get; set; }
+        public string ExpirationDate { get; set; }
         public int SecurityCode { get; set; }
+        public string Salt { get; set; }
     
         public virtual ICollection<BILLING> BILLINGs { get; set; }
+        public virtual ICollection<CUSTOMER> CUSTOMERs { get; set; }
     }
 }

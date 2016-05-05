@@ -4,7 +4,7 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Gallery</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -39,7 +39,7 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            <img src="~/Photos/@Html.DisplayFor(modelItem => item.PhotoName)" />
+            <img src="~/Photos/@Html.DisplayFor(modelItem => item.Path)" />
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Title)
@@ -61,10 +61,15 @@
         </td>
         
         <td>
+            @Html.ActionLink("Add to Cart", "AddToCart", "PhotoCart", new { id = item.PhotoId }, new { @class = "btn btn-default"})
+        </td>
+
+        <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.PhotoId }) |
             @Html.ActionLink("Details", "Details", new { id=item.PhotoId }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.PhotoId })
         </td>
+      
     </tr>
 }
 

@@ -18,7 +18,7 @@ namespace Photography.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-         private DataModel db = new DataModel();
+         private naKremerEntities db = new naKremerEntities();
         public AccountController()
             : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext())))
         {
@@ -42,42 +42,26 @@ namespace Photography.Controllers
 
         //
         // POST: /Account/Login
-       /*
+/*
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(Photography.CUSTOMER c)
+        public ActionResult Login(Photography.CUSTOMER c)
         {
             if (ModelState.IsValid)
             {
-               // Compute the hash
-            byte[] data = System.Text.Encoding.ASCII.GetBytes(c.Hash + "#@!");
-            data = new System.Security.Cryptography.SHA256Managed().ComputeHash(data);
-            String hash = System.Text.Encoding.ASCII.GetString(data);
-            // Open a Sql connection
-            SqlConnection sqlConnection1 = new SqlConnection("data source=cs.cofo.edu;initial catalog=naKremer;persist security info=True;user id=nkremer;password=4lp0irjd;");
-            SqlCommand cmd = new SqlCommand("uspVerifyCustomer", sqlConnection1);
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@CurrentUser", SqlDbType.VarChar).Value = c.Email;
-            cmd.Parameters.Add("@CurrentHash", SqlDbType.VarChar).Value = hash;
-            sqlConnection1.Open();
-            int count = 0;
-            count = (Int32)cmd.ExecuteScalar();
-            // If count is 0 then the username or password is wrong
-            if (count == 0)
-            {
-                ViewBag.Message = "<div class=\"alert alert-warning alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>" + "Wrong Username or Password" + "</div>";
-                return View();
-            }
-            else
-            {
-               
-             FormsAuthentication.SetAuthCookie(c.Email, false);
-                return RedirectToAction("Index", "Home");
-            }
             
+            }
+                else
+                {
+
+                    FormsAuthentication.SetAuthCookie(c.Email, false);
+                    return RedirectToAction("Index", "Home");
+                }
+
+            }
         }
-*/
+        */
         //
         // GET: /Account/Register
         [AllowAnonymous]
@@ -91,26 +75,24 @@ namespace Photography.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public async Task<ActionResult> Register(RegisterViewModel C)
         {
-            if (ModelState.IsValid)
-            {
-                var user = new ApplicationUser() { UserName = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    await SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    AddErrors(result);
-                }
-            }
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
-        }
+        	// Hash the password
+        	byte[] data = System.Text.Encoding.ASCII.GetBytes(C.Password + "#@!");
+        	data = new System.Security.Cryptography.SHA256Managed().ComputeHash(data);
+        	String hash = System.Text.Encoding.ASCII.GetString(data);
+        	// Use Database context to do stored procedure
+        	try
+        	{
+            	
+        	}
+        	catch (Exception e)
+        	{
+            	ViewBag.Error = "Please Contact Administrator For Creation Of Account";
+            	return View("Register");
+        	}
+        	return RedirectToAction("Index", "Home");
+    	}
 
         //
         // POST: /Account/Disassociate
@@ -130,6 +112,7 @@ namespace Photography.Controllers
             }
             return RedirectToAction("Manage", new { Message = message });
         }
+        
 
         //
         // GET: /Account/Manage

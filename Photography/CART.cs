@@ -17,15 +17,15 @@ namespace Photography
         public CART()
         {
             this.INVOICEs = new HashSet<INVOICE>();
+            this.PHOTO_CART = new HashSet<PHOTO_CART>();
         }
     
         public int CartId { get; set; }
         public int CustomerId { get; set; }
-        public Nullable<int> VendorId { get; set; }
         public byte[] IsActive { get; set; }
     
         public virtual CUSTOMER CUSTOMER { get; set; }
-        public virtual VENDOR VENDOR { get; set; }
         public virtual ICollection<INVOICE> INVOICEs { get; set; }
+        public virtual ICollection<PHOTO_CART> PHOTO_CART { get; set; }
     }
 }

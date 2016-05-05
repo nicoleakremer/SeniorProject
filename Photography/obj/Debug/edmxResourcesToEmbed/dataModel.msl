@@ -1,12 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-  <EntityContainerMapping StorageEntityContainer="naKremerModelStoreContainer" CdmEntityContainer="DataModel">
+  <EntityContainerMapping StorageEntityContainer="naKremerModelStoreContainer" CdmEntityContainer="naKremerEntities">
     <EntitySetMapping Name="BILLINGs">
       <EntityTypeMapping TypeName="naKremerModel.BILLING">
         <MappingFragment StoreEntitySet="BILLING">
           <ScalarProperty Name="BillingId" ColumnName="BillingId" />
           <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-          <ScalarProperty Name="VendorId" ColumnName="VendorId" />
           <ScalarProperty Name="CardId" ColumnName="CardId" />
           <ScalarProperty Name="State" ColumnName="State" />
           <ScalarProperty Name="Street" ColumnName="Street" />
@@ -20,42 +19,22 @@
         <MappingFragment StoreEntitySet="CART">
           <ScalarProperty Name="CartId" ColumnName="CartId" />
           <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-          <ScalarProperty Name="VendorId" ColumnName="VendorId" />
           <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="CREDIT_CARD">
-      <EntityTypeMapping TypeName="naKremerModel.CREDIT_CARD">
-        <MappingFragment StoreEntitySet="CREDIT_CARD">
-          <ScalarProperty Name="CardId" ColumnName="CardId" />
-          <ScalarProperty Name="CardType" ColumnName="CardType" />
-          <ScalarProperty Name="CardNumber" ColumnName="CardNumber" />
-          <ScalarProperty Name="NameOnCard" ColumnName="NameOnCard" />
-          <ScalarProperty Name="ExpirationDate" ColumnName="ExpirationDate" />
-          <ScalarProperty Name="SecurityCode" ColumnName="SecurityCode" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="CUSTOMERs">
       <EntityTypeMapping TypeName="naKremerModel.CUSTOMER">
         <MappingFragment StoreEntitySet="CUSTOMER">
+          <ScalarProperty Name="CardId" ColumnName="CardId" />
+          <ScalarProperty Name="Roles" ColumnName="Roles" />
           <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
           <ScalarProperty Name="Email" ColumnName="Email" />
           <ScalarProperty Name="Password" ColumnName="Password" />
           <ScalarProperty Name="FirstName" ColumnName="FirstName" />
           <ScalarProperty Name="LastName" ColumnName="LastName" />
           <ScalarProperty Name="Phone" ColumnName="Phone" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="INVENTORies">
-      <EntityTypeMapping TypeName="naKremerModel.INVENTORY">
-        <MappingFragment StoreEntitySet="INVENTORY">
-          <ScalarProperty Name="InventoryId" ColumnName="InventoryId" />
-          <ScalarProperty Name="RetailPrice" ColumnName="RetailPrice" />
-          <ScalarProperty Name="WholeSalePrice" ColumnName="WholeSalePrice" />
-          <ScalarProperty Name="NumInStock" ColumnName="NumInStock" />
+          <ScalarProperty Name="Salt" ColumnName="Salt" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -64,25 +43,9 @@
         <MappingFragment StoreEntitySet="INVOICE">
           <ScalarProperty Name="InvoiceId" ColumnName="InvoiceId" />
           <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-          <ScalarProperty Name="VendorId" ColumnName="VendorId" />
           <ScalarProperty Name="CartId" ColumnName="CartId" />
           <ScalarProperty Name="TotalCost" ColumnName="TotalCost" />
           <ScalarProperty Name="DateOrder" ColumnName="DateOrder" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="PHOTOS">
-      <EntityTypeMapping TypeName="naKremerModel.Photo">
-        <MappingFragment StoreEntitySet="PHOTOS">
-          <ScalarProperty Name="PhotoId" ColumnName="PhotoId" />
-          <ScalarProperty Name="InventoryId" ColumnName="InventoryId" />
-          <ScalarProperty Name="VendorId" ColumnName="VendorId" />
-          <ScalarProperty Name="Title" ColumnName="Title" />
-          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-          <ScalarProperty Name="LastName" ColumnName="LastName" />
-          <ScalarProperty Name="Genre" ColumnName="Genre" />
-          <ScalarProperty Name="Description" ColumnName="Description" />
-          <ScalarProperty Name="Price" ColumnName="Price" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -91,7 +54,6 @@
         <MappingFragment StoreEntitySet="SHIPPING">
           <ScalarProperty Name="ShippingId" ColumnName="ShippingId" />
           <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-          <ScalarProperty Name="VendorId" ColumnName="VendorId" />
           <ScalarProperty Name="State" ColumnName="State" />
           <ScalarProperty Name="Street" ColumnName="Street" />
           <ScalarProperty Name="City" ColumnName="City" />
@@ -110,18 +72,9 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="VENDORs">
-      <EntityTypeMapping TypeName="naKremerModel.VENDOR">
-        <MappingFragment StoreEntitySet="VENDOR">
-          <ScalarProperty Name="VendorId" ColumnName="VendorId" />
-          <ScalarProperty Name="Email" ColumnName="Email" />
-          <ScalarProperty Name="Password" ColumnName="Password" />
-          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-          <ScalarProperty Name="LastName" ColumnName="LastName" />
-          <ScalarProperty Name="Phone" ColumnName="Phone" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="AddCart" FunctionName="naKremerModel.Store.AddCart" />
+    <FunctionImportMapping FunctionImportName="AddPhotoToCart" FunctionName="naKremerModel.Store.AddPhotoToCart" />
+    <FunctionImportMapping FunctionImportName="DisableCart" FunctionName="naKremerModel.Store.DisableCart" />
     <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="naKremerModel.Store.sp_alterdiagram" />
     <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="naKremerModel.Store.sp_creatediagram" />
     <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="naKremerModel.Store.sp_dropdiagram" />
@@ -146,6 +99,50 @@
     </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="naKremerModel.Store.sp_renamediagram" />
     <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="naKremerModel.Store.sp_upgraddiagrams" />
-    <FunctionImportMapping FunctionImportName="STUDENT_Add" FunctionName="naKremerModel.Store.STUDENT_Add" />
+    <FunctionImportMapping FunctionImportName="findPassword" FunctionName="naKremerModel.Store.findPassword" />
+    <FunctionImportMapping FunctionImportName="findSalt" FunctionName="naKremerModel.Store.findSalt" />
+    <EntitySetMapping Name="PHOTO_CART">
+      <EntityTypeMapping TypeName="naKremerModel.PHOTO_CART">
+        <MappingFragment StoreEntitySet="PHOTO_CART">
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="CartId" ColumnName="CartId" />
+          <ScalarProperty Name="PhotoId" ColumnName="PhotoId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="findCredit" FunctionName="naKremerModel.Store.findCredit" />
+    <FunctionImportMapping FunctionImportName="findSaltCredit" FunctionName="naKremerModel.Store.findSaltCredit" />
+    <FunctionImportMapping FunctionImportName="RemovePhotoFromCart" FunctionName="naKremerModel.Store.RemovePhotoFromCart" />
+    <FunctionImportMapping FunctionImportName="RemoveQuantityOfPhotoFromCart" FunctionName="naKremerModel.Store.RemoveQuantityOfPhotoFromCart" />
+    <EntitySetMapping Name="PHOTOS">
+      <EntityTypeMapping TypeName="naKremerModel.Photo">
+        <MappingFragment StoreEntitySet="PHOTOS">
+          <ScalarProperty Name="Path" ColumnName="Path" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Genre" ColumnName="Genre" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="PhotoId" ColumnName="PhotoId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CREDIT_CARD">
+      <EntityTypeMapping TypeName="naKremerModel.CREDIT_CARD">
+        <MappingFragment StoreEntitySet="CREDIT_CARD">
+          <ScalarProperty Name="Salt" ColumnName="Salt" />
+          <ScalarProperty Name="SecurityCode" ColumnName="SecurityCode" />
+          <ScalarProperty Name="ExpirationDate" ColumnName="ExpirationDate" />
+          <ScalarProperty Name="NameOnCard" ColumnName="NameOnCard" />
+          <ScalarProperty Name="CardNumber" ColumnName="CardNumber" />
+          <ScalarProperty Name="CardType" ColumnName="CardType" />
+          <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+          <ScalarProperty Name="CardId" ColumnName="CardId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="removeFromCart" FunctionName="naKremerModel.Store.removeFromCart" />
   </EntityContainerMapping>
 </Mapping>

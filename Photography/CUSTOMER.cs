@@ -28,10 +28,16 @@ namespace Photography
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Phone { get; set; }
+        public string Salt { get; set; }
+        public string Roles { get; set; }
+        public Nullable<int> CardId { get; set; }
     
         public virtual ICollection<BILLING> BILLINGs { get; set; }
         public virtual ICollection<CART> CARTs { get; set; }
         public virtual ICollection<INVOICE> INVOICEs { get; set; }
         public virtual ICollection<SHIPPING> SHIPPINGs { get; set; }
+        public virtual CUSTOMER CUSTOMER1 { get; set; }
+        public virtual CUSTOMER CUSTOMER2 { get; set; }
+        public virtual CREDIT_CARD CREDIT_CARD { get; set; }
     }
 }

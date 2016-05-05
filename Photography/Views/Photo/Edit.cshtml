@@ -18,21 +18,13 @@
         @Html.HiddenFor(model => model.PhotoId)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.InventoryId, "InventoryId", new { @class = "control-label col-md-2" })
+           Photo 
             <div class="col-md-10">
-                @Html.DropDownList("InventoryId", String.Empty)
-                @Html.ValidationMessageFor(model => model.InventoryId)
+                <img src="~/Photos/@Html.DisplayFor(model => model.Path)" />   
             </div>
+          
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.VendorId, "VendorId", new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("VendorId", String.Empty)
-                @Html.ValidationMessageFor(model => model.VendorId)
-            </div>
-        </div>
-
+        
         <div class="form-group">
             @Html.LabelFor(model => model.Title, new { @class = "control-label col-md-2" })
             <div class="col-md-10">

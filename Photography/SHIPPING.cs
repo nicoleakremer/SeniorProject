@@ -16,13 +16,11 @@ namespace Photography
     {
         public int ShippingId { get; set; }
         public int CustomerId { get; set; }
-        public Nullable<int> VendorId { get; set; }
         public string State { get; set; }
         public string Street { get; set; }
         public string City { get; set; }
         public int Zip { get; set; }
     
         public virtual CUSTOMER CUSTOMER { get; set; }
-        public virtual VENDOR VENDOR { get; set; }
     }
 }

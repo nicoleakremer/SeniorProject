@@ -10,13 +10,52 @@ using System.Web.Mvc;
 using Photography;
 using System.Security.Cryptography;
 using System.Web.Helpers;
+using System.Data.Entity.Core.Objects;
+using System.Web.Security;
 
 
 namespace Photography.Controllers
 {
     public class RegisterController : Controller
     {
-        private DataModel db = new DataModel();
+        private naKremerEntities db = new naKremerEntities();
+
+        
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Login(CUSTOMER c)
+        {
+
+            ObjectResult<string> password = db.findPassword(c.Email);
+            ObjectResult<string> salt = db.findSalt(c.Email);
+            string actPass = password.First();
+            string actSalt = salt.First();
+            string hash = Crypto.Hash(actSalt + c.Password);
+            if (actPass == hash)
+            {
+                //return and login
+                FormsAuthentication.SetAuthCookie(c.Email, false);
+                return RedirectToAction("Index", "Home");
+
+            }
+            else
+            {
+                ViewBag.Msg = "Invalid User";
+                   return View();
+                //return error message/page
+            }
+            return View();
+        }
+
+        public async Task<ActionResult> Logout()
+        {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Index", "Home");
+        }
 
         // GET: /Register/
         public async Task<ActionResult> Index()
@@ -40,6 +79,7 @@ namespace Photography.Controllers
         }
 
         // GET: /Register/Create
+        
         public ActionResult Create()
         {
             return View();
@@ -47,27 +87,77 @@ namespace Photography.Controllers
 
         // POST: /Register/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include="CustomerId,Email,Password,FirstName,LastName,Phone")] CUSTOMER customer)
+        public async Task<ActionResult> Create([Bind(Include="CustomerId,Email,Password,FirstName,LastName,Phone")] CUSTOMER c)
         {
           
             if (ModelState.IsValid)
             {
-             /*
                 string salt = Crypto.GenerateSalt();
-                string passAndSalt;
-                string UserHash;
-                passAndSalt = customer.Password + salt;
-                UserHash = Crypto.Hash(passAndSalt);
-                */
-                db.CUSTOMERs.Add(customer);
+                string hash = Crypto.Hash(salt + c.Password);
+                c.Password = hash;
+                c.Salt = salt;
+                c.Roles = "u";
+                db.CUSTOMERs.Add(c);
                 await db.SaveChangesAsync();
+
+                db.AddCart(c.Email);
+                FormsAuthentication.SetAuthCookie(c.Email, false);
                 return RedirectToAction("Index","Home");
             }
+       
+        return RedirectToAction("Index", "Home");
+        }
 
-            return View(customer);
+        public ActionResult CreateVendor()
+        {
+            return View();
+        }
+        [Authorize(Roles = "v")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CreateVendor([Bind(Include = "CustomerId,Email,Password,FirstName,LastName,Phone")] CUSTOMER c)
+        {
+
+            if (ModelState.IsValid)
+            {
+                string salt = Crypto.GenerateSalt();
+                string hash = Crypto.Hash(salt + c.Password);
+                c.Password = hash;
+                c.Salt = salt;
+                c.Roles = "v";
+                db.CUSTOMERs.Add(c);
+                await db.SaveChangesAsync();
+                return RedirectToAction("Create", "Credit_Card");
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+         [Authorize(Roles = "a")]
+        public ActionResult CreateAdmin()
+        {
+            return View();
+        }
+        [Authorize(Roles="a")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CreateAdmin([Bind(Include = "CustomerId,Email,Password,FirstName,LastName,Phone")] CUSTOMER c)
+        {
+
+            if (ModelState.IsValid)
+            {
+                string salt = Crypto.GenerateSalt();
+                string hash = Crypto.Hash(salt + c.Password);
+                c.Password = hash;
+                c.Salt = salt;
+                c.Roles = "a";
+                db.CUSTOMERs.Add(c);
+                await db.SaveChangesAsync();
+                return RedirectToAction("Index", "Home");
+            }
+
+            return RedirectToAction("Index", "Home");
         }
 
         // GET: /Register/Edit/5
