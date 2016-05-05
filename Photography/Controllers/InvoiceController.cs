@@ -19,10 +19,9 @@ namespace Photography.Controllers
         public async Task<ActionResult> Index()
         {
             CUSTOMER customer = db.CUSTOMERs.Where(x => x.Email == User.Identity.Name).First();
-
-
-            var invoices = db.INVOICEs.Include(i => i.CART).Include(i => i.CUSTOMER);
-            return View(await invoices.ToListAsync());
+            var invoices = db.INVOICEs.Include(i => i.CART.CustomerId).Include(i => i.CUSTOMER.CustomerId);
+           
+            return View(invoices);
         }
 
         // GET: /Invoice/Details/5

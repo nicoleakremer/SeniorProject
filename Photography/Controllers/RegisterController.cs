@@ -114,7 +114,7 @@ namespace Photography.Controllers
         {
             return View();
         }
-        [Authorize(Roles = "v")]
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> CreateVendor([Bind(Include = "CustomerId,Email,Password,FirstName,LastName,Phone")] CUSTOMER c)
@@ -129,10 +129,13 @@ namespace Photography.Controllers
                 c.Roles = "v";
                 db.CUSTOMERs.Add(c);
                 await db.SaveChangesAsync();
+
+                db.AddCart(c.Email);
+                FormsAuthentication.SetAuthCookie(c.Email, false);
                 return RedirectToAction("Create", "Credit_Card");
             }
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Create", "Credit_Card");
         }
          [Authorize(Roles = "a")]
         public ActionResult CreateAdmin()
@@ -154,6 +157,8 @@ namespace Photography.Controllers
                 c.Roles = "a";
                 db.CUSTOMERs.Add(c);
                 await db.SaveChangesAsync();
+                db.AddCart(c.Email);
+                FormsAuthentication.SetAuthCookie(c.Email, false);
                 return RedirectToAction("Index", "Home");
             }
 

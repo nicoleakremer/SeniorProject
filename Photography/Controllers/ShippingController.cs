@@ -61,7 +61,7 @@ namespace Photography.Controllers
                 
                 db.SHIPPINGs.Add(shipping);
                 await db.SaveChangesAsync();
-                return RedirectToAction("Index", "Invoice");
+                return RedirectToAction("Create", "Credit_Card");
             }
 
             ViewBag.CustomerId = new SelectList(db.CUSTOMERs, "CustomerId", "Email", shipping.CustomerId);

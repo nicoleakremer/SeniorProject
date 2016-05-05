@@ -62,7 +62,7 @@ namespace Photography.Controllers
 
                 db.BILLINGs.Add(billing);
                 await db.SaveChangesAsync();
-                return RedirectToAction("Create", "Shipping");
+                return RedirectToAction("Index", "Invoice");
             }
 
             ViewBag.CardId = new SelectList(db.CREDIT_CARD, "CardId", "CardType", billing.CardId);

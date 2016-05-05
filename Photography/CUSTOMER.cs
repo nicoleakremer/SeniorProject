@@ -36,8 +36,6 @@ namespace Photography
         public virtual ICollection<CART> CARTs { get; set; }
         public virtual ICollection<INVOICE> INVOICEs { get; set; }
         public virtual ICollection<SHIPPING> SHIPPINGs { get; set; }
-        public virtual CUSTOMER CUSTOMER1 { get; set; }
-        public virtual CUSTOMER CUSTOMER2 { get; set; }
         public virtual CREDIT_CARD CREDIT_CARD { get; set; }
     }
 }

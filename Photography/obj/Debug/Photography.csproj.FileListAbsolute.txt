@@ -52,3 +52,4 @@ D:\Documents\Visual Studio 2013\Projects\Photography\Photography\bin\Microsoft.O
 D:\Documents\Visual Studio 2013\Projects\Photography\Photography\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 D:\Documents\Visual Studio 2013\Projects\Photography\Photography\obj\Debug\Photography.dll
 D:\Documents\Visual Studio 2013\Projects\Photography\Photography\obj\Debug\Photography.pdb
+D:\Documents\Visual Studio 2013\Projects\Photography\Photography\obj\Debug\Photography.csprojResolveAssemblyReference.cache

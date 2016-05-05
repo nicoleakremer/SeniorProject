@@ -383,8 +383,6 @@ warning 6002: The table/view 'naKremer.dbo.PHOTO_CART' does not have a primary k
           <NavigationProperty Name="INVOICEs" Relationship="Self.FK_INVOICE_CUSTOMER" FromRole="CUSTOMER" ToRole="INVOICE" />
           <NavigationProperty Name="SHIPPINGs" Relationship="Self.FK_SHIPPING_CUSTOMER" FromRole="CUSTOMER" ToRole="SHIPPING" />
           <Property Name="Roles" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="CUSTOMER1" Relationship="naKremerModel.FK_CUSTOMER_CUSTOMER" FromRole="CUSTOMER" ToRole="CUSTOMER1" />
-          <NavigationProperty Name="CUSTOMER2" Relationship="naKremerModel.FK_CUSTOMER_CUSTOMER" FromRole="CUSTOMER1" ToRole="CUSTOMER" />
           <Property Name="CardId" Type="Int32" />
           <NavigationProperty Name="CREDIT_CARD" Relationship="naKremerModel.FK_CUSTOMER_CREDIT_CARD" FromRole="CUSTOMER" ToRole="CREDIT_CARD" />
           </EntityType>
@@ -605,10 +603,6 @@ warning 6002: The table/view 'naKremer.dbo.PHOTO_CART' does not have a primary k
             <End Role="Photo" EntitySet="PHOTOS" />
             <End Role="PHOTO_CART" EntitySet="PHOTO_CART" />
           </AssociationSet>
-          <AssociationSet Name="FK_CUSTOMER_CUSTOMER" Association="naKremerModel.FK_CUSTOMER_CUSTOMER">
-            <End Role="CUSTOMER" EntitySet="CUSTOMERs" />
-            <End Role="CUSTOMER1" EntitySet="CUSTOMERs" />
-          </AssociationSet>
           <EntitySet Name="CREDIT_CARD" EntityType="naKremerModel.CREDIT_CARD" />
           <AssociationSet Name="FK_BILLING_CREDIT_CARD" Association="naKremerModel.FK_BILLING_CREDIT_CARD">
             <End Role="CREDIT_CARD" EntitySet="CREDIT_CARD" />
@@ -682,18 +676,6 @@ warning 6002: The table/view 'naKremer.dbo.PHOTO_CART' does not have a primary k
             </Principal>
             <Dependent Role="PHOTO_CART">
               <PropertyRef Name="PhotoId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CUSTOMER_CUSTOMER">
-          <End Type="naKremerModel.CUSTOMER" Role="CUSTOMER" Multiplicity="1" />
-          <End Type="naKremerModel.CUSTOMER" Role="CUSTOMER1" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="CUSTOMER">
-              <PropertyRef Name="CustomerId" />
-            </Principal>
-            <Dependent Role="CUSTOMER1">
-              <PropertyRef Name="CustomerId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>

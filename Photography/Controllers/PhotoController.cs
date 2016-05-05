@@ -56,7 +56,7 @@ namespace Photography.Controllers
         }
 
         // GET: /Photo/Create
-        //[Authorize(Roles="v")]
+       [Authorize(Roles = "v")]
         public ActionResult Create()
         {
             
@@ -111,6 +111,7 @@ namespace Photography.Controllers
 
       
         // GET: /Photo/Edit/5
+         [Authorize(Roles = "a")]
         public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
@@ -146,6 +147,7 @@ namespace Photography.Controllers
         }
 
         // GET: /Photo/Delete/5
+        [Authorize(Roles = "a")]
         public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
